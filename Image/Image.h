@@ -9,6 +9,13 @@
 #include <sstream>
 #include <algorithm> // std::reverse
 
+#define WALL            0
+#define STATION         100
+#define ELEVATOR_ST     128
+#define ELEVATOR_SL     132
+#define CUP             150
+#define FREESPACE       200
+
 class Image {
 public:
 	Image();
@@ -21,6 +28,7 @@ public:
 	void createVector(std::vector<std::vector<int>> &image);
 	void loadImage(const std::string filename);
 	void saveImage(std::string filename);
+    void cleanupImage(void);
 	std::vector<std::vector<int>> imageData;
 	std::fstream imageFile;
 	int width;
