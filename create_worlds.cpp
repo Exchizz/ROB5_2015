@@ -14,7 +14,8 @@ int main(){
 	World* Qspace1 = new World(rawImg);
 	World* Qspace2 = new World(rawImg);
 
-	Qspace1->img->setPixel(0,0,100);
+	//Qspace1->img->setPixel(0,0,100);
+	Qspace1->WallExpansion();
 	Qspace2->img->setPixel(0,0,150);
 
 	Qspace1->img->saveImage("qspace1.pgm");

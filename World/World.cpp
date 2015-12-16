@@ -21,8 +21,8 @@ void World::WallExpansion(){
 
 
 		//Might optimize later
-		for(int i = 0; i < getWidth(); i++){
-			std::vector<int> col(getHeight());
+		for(int i = 0; i < img->getWidth(); i++){
+			std::vector<int> col(img->getHeight());
 			expand_map.push_back(col);
 		}
 
@@ -51,11 +51,10 @@ void World::WallExpansion(){
 			}
 		}
 
-		std::cout << "width: " << getWidth() << std::endl;
-		for(int x = 0; x < getWidth(); ++x){
-			for(int y = 0; y < getHeight(); y++){
-				//setPixel(x,y,(expand_map[x][y] == 0) ? WHITE : BLACK);
-				setPixel(x,y,expand_map[x][y]);
+		for(int x = 0; x < img->getWidth(); ++x){
+			for(int y = 0; y < img->getHeight(); y++){
+				//img->setPixel(x,y,(expand_map[x][y] == 0) ? WHITE : BLACK);
+				img->setPixel(x,y,expand_map[x][y]);
 			}
 		}
 }

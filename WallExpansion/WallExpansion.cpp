@@ -9,7 +9,7 @@ void Planning::wall_expansion() {
 	}
 	for(int x = 0; x < getWidth(); x++){
 		for(int y = 0; y < getHeight(); y++){
-			if(getPixel(x,y) <= 50){
+			if(getPixel(x,y) <= 50){ // Retter senere
 				for(int i = 0; i<=expansion_factor;i++){
 					for(int j = 0; j<=expansion_factor;j++){
 						if(y+i <= getHeight()-1 && x+j <= getWidth()-1 ){

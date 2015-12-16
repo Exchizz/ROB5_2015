@@ -15,7 +15,7 @@ public:
 	Image *img;
 
 	World(Image *img);
-	void World::WallExpansion();
+	void WallExpansion();
 };
 
 #endif /* WORLD_WORLD_H_ */
