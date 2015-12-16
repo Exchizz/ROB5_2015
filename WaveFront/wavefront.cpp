@@ -17,9 +17,9 @@ Wavefront::~Wavefront(void)
 }
 
 
-void Wavefront::createWavefront(int locX, int locY)
+void Wavefront::createWavefront(signed int locX, signed int locY)
 {
-	int value = 1;		//used for coloring the waves
+    unsigned int value = 1;		//used for coloring the waves
 	workspace->setPixel16U(locX, locY, value);
 
 	//check adjacent pixels
@@ -35,8 +35,8 @@ void Wavefront::createWavefront(int locX, int locY)
 		value = workspace->getPixelValuei(currentBrushfire.x, currentBrushfire.y, 0) + 1;
 
         //check and set all adjacent pixels (8 point connectivity)
-		for(int x_add = -1; x_add < 2; x_add++) {
-			for(int y_add = -1; y_add < 2; y_add++) {
+        for(signed int x_add = -1; x_add < 2; x_add++) {
+            for(signed int y_add = -1; y_add < 2; y_add++) {
 
                 //check for out of bounds, skip if it is
 				if(outOfBounds(currentBrushfire.x + x_add, currentBrushfire.y + y_add)) {
@@ -45,7 +45,7 @@ void Wavefront::createWavefront(int locX, int locY)
 
                 //check if pixel value is larger and add new brushfire to queue (the value could be white or it could have already been checked
 //                                                                               both cases need to be updated because the new path is shorter)
-				int check_value = workspace->getPixelValuei(currentBrushfire.x + x_add, currentBrushfire.y + y_add, 0);
+                unsigned int check_value = workspace->getPixelValuei(currentBrushfire.x + x_add, currentBrushfire.y + y_add, 0);
 
 				if(check_value > value) {
 					Brushfire nextFire(currentBrushfire.x + x_add, currentBrushfire.y + y_add);
@@ -60,7 +60,7 @@ void Wavefront::createWavefront(int locX, int locY)
 
 
 
-bool Wavefront::outOfBounds(int x, int y)
+bool Wavefront::outOfBounds(signed int x, signed int y)
 {
 	if(x < 0 || x >= ws_width)
 		return true;
