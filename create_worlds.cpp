@@ -20,8 +20,10 @@ int main(){
     Qspace2->img->cleanupImage();
     std::cout << "Cleanup i done" << std::endl;
 
-    Qspace2->img->maxValue = 65535;
-    Qspace2->Wavefront(Point(2391,1300));
+//    Qspace2->img->maxValue = 65535;
+    Qspace2->img->maxValue = 2887;
+    Qspace2->img->cleanupImage();
+    Qspace2->Wavefront_offloading(Point(2391,1300), Point(2875,1300));
 
     Qspace1->img->saveImage("qspace1.pgm");
 
