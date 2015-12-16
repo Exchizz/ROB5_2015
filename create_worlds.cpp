@@ -5,7 +5,7 @@
  *      Author: exchizz
  */
 #include "World/World.h"
-
+#include "Point.h"
 
 int main(){
 	Image* rawImg = new Image;
@@ -18,15 +18,16 @@ int main(){
 	Qspace1->WallExpansion();
 	Qspace2->img->setPixel(0,0,150);
 
-	Qspace1->img->saveImage("qspace1.pgm");
-	Qspace2->img->saveImage("qspace2.pgm");
+    Qspace2->img->maxValue = 65535;
+    Qspace2->Wavefront(Point(2391,1300));
 
-	rawImg->saveImage("origin_image.pgm");
+    Qspace1->img->saveImage("qspace1.pgm");
 
+    Qspace2->img->saveImage("qspace2.pgm");
 
+    rawImg->saveImage("origin_image.pgm");
 
-
-	//Qspace->wall_expansion();
+    //Qspace->wall_expansion();
 	//World* Wspace_opendoor = new World(rawImg);
 	//Wspace_closeddoor->door_detection();
 	//World* Wspace_closeddoor = new World(rawImg);
