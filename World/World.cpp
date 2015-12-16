@@ -20,7 +20,6 @@ void World::WallExpansion(){
 		std::vector<std::vector <int> > expand_map;
 
 
-		//Might optimize later
 		for(int i = 0; i < img->getWidth(); i++){
 			std::vector<int> col(img->getHeight());
 			expand_map.push_back(col);
@@ -46,7 +45,7 @@ void World::WallExpansion(){
 						}
 					}
 				}else if(expand_map[x][y] != 1){
-						expand_map[x][y] = 0;
+						expand_map[x][y] = img->maxValue;
 				}
 			}
 		}
