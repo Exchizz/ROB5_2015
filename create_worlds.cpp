@@ -16,7 +16,9 @@ int main(){
 
 	//Qspace1->img->setPixel(0,0,100);
 	Qspace1->WallExpansion();
-	Qspace2->img->setPixel(0,0,150);
+    std::cout << "Wall expansion i done" << std::endl;
+    Qspace2->img->cleanupImage();
+    std::cout << "Cleanup i done" << std::endl;
 
     Qspace2->img->maxValue = 65535;
     Qspace2->Wavefront(Point(2391,1300));
@@ -32,7 +34,7 @@ int main(){
 	//Wspace_closeddoor->door_detection();
 	//World* Wspace_closeddoor = new World(rawImg);
 	//wspace_closeddoor.saveImage("filename.pgm");
-
+    std::cout << "Done" << std::endl;
 
 return 0;
 }
