@@ -29,6 +29,9 @@ public:
 	std::string inputLine;
 	std::string version;
 	std::stringstream ss;
+
+	Image (const Image *obj);
+
 };
 
 

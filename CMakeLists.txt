@@ -32,3 +32,4 @@ ENDIF()
 
 # And now we add any targets that we want
 add_executable(read_save_image read_save_image.cpp Image/Image.cpp)
+add_executable(create_worlds create_worlds.cpp Image/Image.cpp World/World.cpp)

@@ -8,6 +8,7 @@ int main(){
 	image.loadImage("complete_map_project.pgm");
 	image.saveImage("outfrom_test.pgm");
 
+	std::cout << "Done" << std::endl;
 
 return 0;
 }
