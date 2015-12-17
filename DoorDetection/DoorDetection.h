@@ -7,7 +7,10 @@
 //#include <cstdlib>
 /*
 class LineSegment {
-public:
+public:#define DOORWIDTH_MAX 50
+#define DOORWIDTH_MIN 5
+#define DOORTHICKNESS_MAX 20
+#define DOORTHICKNESS_MIN 2
 	LineSegment();
 	Point start;
 	Point end;
@@ -23,9 +26,18 @@ public:
 };
 */
 
+#define DOORWIDTH_MAX 50
+#define DOORWIDTH_MIN 5
+#define DOORTHICKNESS_MAX 20
+#define DOORTHICKNESS_MIN 2
+
 class DoorDetection {
 public:
 	DoorDetection();
-	std::vector<Door> FindDoorways(unsigned int door_thickness, unsigned int min_door_width, unsigned int max_door_width, World* world);
+    std::vector<Door> FindDoorways(const World *world);
+private:
+    void FindHorizontalDoorways(unsigned int doorThickness_min , unsigned int doorThickness_max, unsigned int doorWidth_min, unsigned int doorWidth_max, World* world, std::vector<Door> &doorways);
+    void FindVerticalDoorways(unsigned int doorThickness_min , unsigned int doorThickness_max, unsigned int doorWidth_min, unsigned int doorWidth_max, World* world, std::vector<Door> &doorways);
+    void drawDoors(World* world, std::vector<Door> &doorways);
 };
 
