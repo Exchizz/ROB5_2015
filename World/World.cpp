@@ -86,9 +86,8 @@ void World::Wavefront_offloading(Point start1, Point start2) {
         }
     }
 }
-
-
 void World::Wavefront_navigation(Point start, Point stop) {
+
 
     unsigned int value = 1;		//used for coloring the waves
     img->setPixel(start.x_pos, start.y_pos, value);
@@ -133,6 +132,54 @@ void World::Wavefront_navigation(Point start, Point stop) {
     }
 
 }
+
+std::vector<Point> World::Wavefront_treecreation(Point start, unsigned int door_color, unsigned int door_pixel_color){
+
+
+    // We start from value door_color to avoid stopping when the wavefront reaches the value.
+    unsigned int value = door_color;		//used for coloring the waves
+    img->setPixel(start.x_pos, start.y_pos, value);
+
+    std::queue<Point> brushfires;
+    std::vector<Point> door_px_points;
+
+    brushfires.push(start);      //brushfires is a queue of Brushfire objects
+
+    while(!brushfires.empty()) {
+        //get first brushfire in the queue and erase.
+        Point currentBrushfire = brushfires.front();
+        brushfires.pop();
+
+        //get current pixel value
+        value = img->getPixel(currentBrushfire.x_pos, currentBrushfire.y_pos) + 1;
+
+        //check and set all adjacent pixels (8 point connectivity)
+        for(signed int x_add = -1; x_add < 2; x_add++) {
+            for(signed int y_add = -1; y_add < 2; y_add++) {
+                //check for out of bounds, skip if it is
+                if(outOfBounds(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add)) {
+                    continue;
+                }
+
+                //check if pixel value is larger and add new brushfire to queue (the value could be white or it could have already been checked
+                //                                                                               both cases need to be updated because the new path is shorter)
+                unsigned int check_value = img->getPixel(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add);
+                if(check_value == door_pixel_color){
+                    door_px_points.push_back(Point(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add));
+                }
+
+                if(check_value > value && !(check_value == door_color)) { // Stop when we hit door
+                    Point nextFire(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add);
+                    brushfires.push(nextFire);
+
+                    img->setPixel(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add, value);
+                }
+            }
+        }
+    }
+    return door_px_points;
+}
+
 
 void World::WallExpansion() {
     int expansion_factor = 4;

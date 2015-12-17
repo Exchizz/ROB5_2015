@@ -8,6 +8,8 @@ private:
 public:
 	Point start;
 	Point stop;
+    Point px1;
+    Point px2;
 	Door();
 	Door(Point start, Point stop);
 	unsigned int id;
