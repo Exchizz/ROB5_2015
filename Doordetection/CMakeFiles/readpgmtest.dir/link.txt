@@ -1,1 +1,0 @@
-/usr/bin/c++       CMakeFiles/readpgmtest.dir/readpgmtest.cpp.o CMakeFiles/readpgmtest.dir/PPMLoader.cpp.o CMakeFiles/readpgmtest.dir/Image.cpp.o  -o readpgmtest -rdynamic 

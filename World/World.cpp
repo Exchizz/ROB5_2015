@@ -6,7 +6,7 @@
  */
 
 #include "World.h"
-
+#include "../Point/Point.h"
 
 World::World(Image *rawImg) {
     img = new Image(rawImg);

@@ -9,7 +9,7 @@
 #define WORLD_WORLD_H_
 
 #include "../Image/Image.h"
-#include "../Point.h"
+#include "../Point/Point.h"
 #include <queue>
 
 class World {
@@ -25,6 +25,7 @@ public:
     //void Wavefront(Point start, Point stop, bool doStop);
 
     bool outOfBounds(signed int x, signed int y);
+
 };
 
 #endif /* WORLD_WORLD_H_ */
