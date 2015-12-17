@@ -127,7 +127,7 @@ void Image::setPixel(const int width, const int height, const int value) {
     imageData[width][height] = value;
 }
 
-void Image::cleanupImage()
+void Image::cleanupImage(void)
 {
     std::vector<std::vector <int> > expand_map;
     int width = getWidth();
@@ -151,7 +151,7 @@ void Image::cleanupImage()
                 expand_map[x][y] = STATION;
             }
             else if(color >= ELEVATOR_ST && color <= ELEVATOR_SL){ // elevator
-                expand_map[x][y] = WALL;
+                elevatorExpansion(x, y, color);
             }
             else if(color == CUP){       // cups
                 expand_map[x][y] = CUP;
@@ -166,5 +166,33 @@ void Image::cleanupImage()
             //img->setPixel(x,y,(expand_map[x][y] == 0) ? WHITE : BLACK);
             setPixel(x,y,expand_map[x][y]);
         }
+    }
+}
+
+void Image::elevatorExpansion(int x, int y, int color) {
+    int expansion_factor = 8;
+    bool elevator = true;
+    // is it really an elevator ?
+    for(int i = 0; i <= 1;i++){
+        for(int j = 0; j <= 1;j++){
+            if(getPixel(x+j, y+i) == color){
+            }
+            else {
+                elevator = false;
+            }
+        }
+    }
+    if(elevator){ // yes it was
+        for(int i = 0; i <= expansion_factor;i++){
+            for(int j = 0; j <= expansion_factor;j++){
+                setPixel(x+j, y+i, WALL);
+                setPixel(x-j, y+i, WALL);
+                setPixel(x-j, y-i, WALL);
+                setPixel(x+j, y-i, WALL);
+            }
+        }
+    }
+    else { // no it was not
+        setPixel(x, y, WALL);
     }
 }

@@ -40,6 +40,8 @@ public:
 
 	Image (const Image *obj);
 
+private:
+    void elevatorExpansion(int x, int y, int color);
 };
 
 
