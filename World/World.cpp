@@ -7,6 +7,7 @@
 
 #include "World.h"
 #include "../Point/Point.h"
+#include <algorithm>
 
 World::World(Image *rawImg) {
     img = new Image(rawImg);
@@ -86,6 +87,7 @@ void World::Wavefront_offloading(Point start1, Point start2) {
         }
     }
 }
+
 void World::Wavefront_navigation(Point start, Point stop) {
 
 
@@ -133,7 +135,11 @@ void World::Wavefront_navigation(Point start, Point stop) {
 
 }
 
-std::vector<Point> World::Wavefront_treecreation(Point start, unsigned int door_color, unsigned int door_pixel_color){
+bool comperator(Point a, Point b){
+    return (a.x_pos == b.x_pos && a.y_pos == b.y_pos);
+}
+
+std::vector<Point> World::Wavefront_DoorScanner(Point start, unsigned int door_color, unsigned int door_pixel_color){
 
 
     // We start from value door_color to avoid stopping when the wavefront reaches the value.
@@ -177,6 +183,10 @@ std::vector<Point> World::Wavefront_treecreation(Point start, unsigned int door_
             }
         }
     }
+
+
+    std::vector<Point>::iterator it = std::unique(door_px_points.begin(), door_px_points.end(), comperator);
+    door_px_points.resize(std::distance(door_px_points.begin(), it));
     return door_px_points;
 }
 

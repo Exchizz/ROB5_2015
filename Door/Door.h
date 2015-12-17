@@ -10,6 +10,8 @@ public:
 	Point stop;
     Point px1;
     Point px2;
+    bool px1_visited = false;
+    bool px2_visited = false;
 	Door();
 	Door(Point start, Point stop);
 	unsigned int id;

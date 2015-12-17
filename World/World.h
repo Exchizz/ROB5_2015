@@ -11,7 +11,9 @@
 #include "../Image/Image.h"
 #include "../Point/Point.h"
 #include <queue>
+#include <list>
 #include "../Door/Door.h"
+
 
 class World {
 public:
@@ -21,7 +23,8 @@ public:
 	void WallExpansion();
     void Wavefront_navigation(Point start, Point stop);
     void Wavefront_offloading(Point start1, Point start2);
-    std::vector<Point> Wavefront_treecreation(Point start, unsigned int stop_color, unsigned int door_pixel_color);
+
+    std::vector<Point> Wavefront_DoorScanner(Point start, unsigned int stop_color, unsigned int door_pixel_color);
     //void Wavefront(Point start, Point stop);
 
     //void Wavefront(Point start, Point stop, bool doStop);
