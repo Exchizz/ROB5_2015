@@ -170,7 +170,7 @@ void Image::cleanupImage(void)
 }
 
 void Image::elevatorExpansion(int x, int y, int color) {
-    int expansion_factor = 8;
+    // int expansion_factor = 6;
     bool elevator = true;
     for(int i = 0; i <= 1;i++){             // is it really an elevator ?
         for(int j = 0; j <= 1;j++){
@@ -179,15 +179,15 @@ void Image::elevatorExpansion(int x, int y, int color) {
             else {
                 elevator = false;
             }
+            if ((x + 200) >= getWidth() || (y + 200) >= getHeight()) {
+                elevator = false;
+            }
         }
     }
     if(elevator){                           // yes it was
-        for(int i = 0; i <= expansion_factor;i++){
-            for(int j = 0; j <= expansion_factor;j++){
-                setPixel(x+j, y+i, WALL);
-                setPixel(x-j, y+i, WALL);
-                setPixel(x-j, y-i, WALL);
-                setPixel(x+j, y-i, WALL);
+        for(int i = 0; getPixel(x + i - 2, y - 2) != WALL; i++){
+            for(int j = 0; getPixel(x + i - 1, y + j - 1) != WALL; j++){
+                setPixel(x+i-1, y+j-1, WALL);
             }
         }
     }
