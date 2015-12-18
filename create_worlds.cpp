@@ -29,24 +29,38 @@ int main(){
 
         //Door vertical
         if(doorways[i].start.x_pos == doorways[i].stop.x_pos){
-            doorways[i].px1.y_pos = doorways[i].start.y_pos + (doorways[i].stop.y_pos - doorways[i].start.y_pos)/2;
+            doorways[i].px1.y_pos = doorways[i].start.y_pos + (doorways[i].getLength())/2;
             doorways[i].px1.x_pos = doorways[i].start.x_pos - 1 ;
 
-            doorways[i].px2.y_pos = doorways[i].start.y_pos + (doorways[i].stop.y_pos - doorways[i].start.y_pos)/2;
+            doorways[i].px2.y_pos = doorways[i].start.y_pos + (doorways[i].getLength())/2;
             doorways[i].px2.x_pos = doorways[i].start.x_pos + 1 ;
+        } // Door horizontal
+        else {
+            doorways[i].px1.y_pos = doorways[i].start.y_pos - 1;
+            doorways[i].px1.x_pos = doorways[i].start.x_pos + (doorways[i].getLength())/2 ;
+
+            doorways[i].px2.y_pos = doorways[i].start.y_pos + 1;
+            doorways[i].px2.x_pos = doorways[i].start.x_pos + (doorways[i].getLength())/2 ;
         }
 
-        // Mark dooropening
+        // Mark dooropening (vertical)
         for(int y = doorways[i].start.y_pos; y <= doorways[i].stop.y_pos; ++y) {
             workspace_door->img->setPixel(doorways[i].start.x_pos, y, 127);
         }
+        // Mark dooropenings (horizantal)
+        for(int x = doorways[i].start.x_pos; x <= doorways[i].stop.x_pos; ++x) {
+            workspace_door->img->setPixel(x, doorways[i].start.y_pos, 127);
+        }
 
+        //std::cout << "x1: " << doorways[i].px1.x_pos << " y:" << doorways[i].px1.y_pos;
+        //std::cout << "\t x2: " << doorways[i].px2.x_pos << " y: " << doorways[i].px2.y_pos << " L:" << doorways[i].getLength() <<  std::endl;
         // Mark left and right side of doorway (px1, px2)
         workspace_door->img->setPixel(doorways[i].px1.x_pos,  doorways[i].px1.y_pos, 126);
         workspace_door->img->setPixel(doorways[i].px2.x_pos,  doorways[i].px2.y_pos, 126);
 
     }
 
+	std::cout << "checkpoint 1" << std::endl;
 
     Tree tree(workspace_door);
     Point start = Point(2391,1300);
@@ -71,25 +85,6 @@ int main(){
     graph.visualize(door);
     graph.SaveGraph("graph.dot");
 
-
-    /*
-    // find doors from offload station
-    auto hit_px_doors = workspace_door->Wavefront_DoorScanner(Point(2391,1300), 127,126);
-
-    // Merge doors with hitspoints
-    auto doorways_visisted = tree.door_hitpoint_merge(doorways, hit_px_doors);
-
-    //Run through every door and mark hitpoint
-    for (auto hitpoint : doorways_visisted){
-        if(hitpoint.px1_visited){
-            workspace_door->img->setPixel(hitpoint.px1.x_pos, hitpoint.px1.y_pos, 2887);
-        }
-
-        if(hitpoint.px2_visited){
-            workspace_door->img->setPixel(hitpoint.px2.x_pos, hitpoint.px2.y_pos, 2887);
-        }
-    }
-    */
 
 	workspace_door->img->saveImage("doors_detected.pgm");
 

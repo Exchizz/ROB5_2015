@@ -41,7 +41,7 @@ std::vector<Door> Tree::door_hitpoint_merge(std::vector<Door> & doorways, std::v
 
 std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways){
 
-	static int counter = 36;
+	static int counter = 2;
 
 	if(--counter <= 0){
 		std::vector<Door> rtn;
