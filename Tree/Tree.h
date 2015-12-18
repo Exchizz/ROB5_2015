@@ -20,6 +20,9 @@ public:
     std::vector<Door> door_hitpoint_merge(std::vector<Door> &, std::vector<Point> &);
 
     std::vector<Door> Tree_generator(Point &start, std::vector<Door> &doorways);
+    std::vector<Door> GenerateNavigationList(Door door);
+    Door AddToList(std::vector<Door>& doorList, Door parent);
+
 };
 
 

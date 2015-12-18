@@ -72,3 +72,18 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 	}
 	return output;
 }
+
+
+std::vector<Door> Tree::GenerateNavigationList(Door door){
+	std::vector<Door> listOfVectors;
+	AddToList(listOfVectors, door);
+	return listOfVectors;
+}
+
+Door Tree::AddToList(std::vector<Door>& doorList, Door parent){
+	for(auto door : parent.adjacent){
+		doorList.push_back( AddToList(doorList, door) );
+	}
+	return parent;
+}
+
