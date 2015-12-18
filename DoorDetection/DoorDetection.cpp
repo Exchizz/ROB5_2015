@@ -13,9 +13,6 @@ std::vector<Door>  DoorDetection::FindDoorways(const World* world){
     drawDoors(doorWorld_ptr, doorways);
     FindVerticalDoorways(DOORTHICKNESS_MIN, DOORTHICKNESS_MAX, DOORWIDTH_MIN, DOORWIDTH_MAX, doorWorld_ptr, doorways);
 
-    world->img->saveImage("test.pgm");
-    doorWorld_ptr->img->saveImage("test2.pgm");
-
     return doorways;
 }
 
