@@ -22,7 +22,7 @@ int main(){
     Qspace1->WallExpansion();
 
 	DoorDetection doordetection;
-	auto doorways = doordetection.FindDoorways(8, 5, 50, workspace_door);
+	auto doorways = doordetection.FindDoorways(workspace_door);
 
     //for(auto doorwaysIt : doorways) {
     for(unsigned int i = 0; i < doorways.size();++i){
