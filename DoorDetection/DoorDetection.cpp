@@ -7,9 +7,9 @@ std::vector<Door>  DoorDetection::FindDoorways(const World* world){
     std::vector<Door> doorways;
     World* doorWorld_ptr = new World(world->img);
 
-    FindVerticalDoorways(DOORTHICKNESS_MIN, DOORTHICKNESS_MAX / 5, DOORWIDTH_MIN, DOORWIDTH_MAX / 2, doorWorld_ptr, doorways);
+    FindVerticalDoorways(DOORTHICKNESS_MIN, DOORTHICKNESS_MAX / 3, DOORWIDTH_MIN, DOORWIDTH_MAX / 3, doorWorld_ptr, doorways);
     drawDoors(doorWorld_ptr, doorways);
-    FindHorizontalDoorways(DOORTHICKNESS_MIN, DOORTHICKNESS_MAX, DOORWIDTH_MIN, DOORWIDTH_MAX, doorWorld_ptr, doorways);
+    FindHorizontalDoorways(DOORTHICKNESS_MIN, DOORTHICKNESS_MAX, DOORWIDTH_MIN, DOORWIDTH_MAX -2, doorWorld_ptr, doorways);
     drawDoors(doorWorld_ptr, doorways);
     FindVerticalDoorways(DOORTHICKNESS_MIN, DOORTHICKNESS_MAX, DOORWIDTH_MIN, DOORWIDTH_MAX, doorWorld_ptr, doorways);
 

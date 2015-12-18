@@ -185,9 +185,9 @@ void Image::elevatorExpansion(int x, int y, int color) {
         }
     }
     if(elevator){                           // yes it was
-        for(int i = 0; getPixel(x + i - 2, y - 2) != WALL; i++){
-            for(int j = 0; getPixel(x + i - 1, y + j - 1) != WALL; j++){
-                setPixel(x+i-1, y+j-1, WALL);
+        for(int i = 0; getPixel(x + i - 6, y - 6) != WALL; i++){
+            for(int j = 0; getPixel(x + i - 5, y + j - 5) != WALL; j++){
+                setPixel(x+i-5, y+j-5, WALL);
             }
         }
     }
