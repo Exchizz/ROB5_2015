@@ -52,9 +52,6 @@ int main(){
             workspace_door->img->setPixel(x, doorways[i].start.y_pos, 127);
         }
 
-        //std::cout << "x1: " << doorways[i].px1.x_pos << " y:" << doorways[i].px1.y_pos;
-        //std::cout << "\t x2: " << doorways[i].px2.x_pos << " y: " << doorways[i].px2.y_pos << " L:" << doorways[i].getLength() <<  std::endl;
-        // Mark left and right side of doorway (px1, px2)
         workspace_door->img->setPixel(doorways[i].px1.x_pos,  doorways[i].px1.y_pos, 126);
         workspace_door->img->setPixel(doorways[i].px2.x_pos,  doorways[i].px2.y_pos, 126);
 

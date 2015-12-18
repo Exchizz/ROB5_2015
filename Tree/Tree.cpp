@@ -1,5 +1,5 @@
 #include "Tree.h"
-
+#include <sstream>
 Tree::Tree()
 {
 
@@ -18,7 +18,9 @@ std::vector<Door> Tree::door_hitpoint_merge(std::vector<Door> & doorways, std::v
 
 	for(int i = 0; i < doorways.size(); ++i){
 		for (auto px : wavefront_hitpoint_px){
-			//std::cout << "wavefront hitpoints: " << px.x_pos << ", " << px.y_pos << std::endl;
+			if(doorways[i].px1.visited  || doorways[i].px2.visited ){
+				break;
+			}
 			if(px.x_pos == doorways[i].px1.x_pos && px.y_pos == doorways[i].px1.y_pos){
 				doorways[i].px1.visited = true;
 				check1 = true;
@@ -35,30 +37,25 @@ std::vector<Door> Tree::door_hitpoint_merge(std::vector<Door> & doorways, std::v
 			output.push_back(doorways[i]);
 		}
 	}
-
 	return output;
 }
 
 std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways){
-
-	static int counter = 50;
+/*
+	static int counter = 200;
 
 	if(--counter <= 0){
 		std::vector<Door> rtn;
 		return rtn;
 	}
+*/
 	// find doors from offload station
 	auto hit_px_doors = world->Wavefront_DoorScanner(start, 127, 126);
 
 	// Merge doors with hitspoints
 	auto doorways_visited = door_hitpoint_merge(doorways, hit_px_doors);
 
-    for(auto elm: doorways_visited){
-    	if(elm.start.x_pos == 2610){
-    		std::cout << "doors visisted: " << elm.start.x_pos << "," << elm.start.y_pos << " px1: " << elm.px1.visited << " px2: " << elm.px2.visited << std::endl;
-    	}
-    }
-
+	static int plotnow = 0;
 	Point *startPoint;
 	std::vector<Door> output;
 	for(auto &door: doorways_visited){
@@ -66,6 +63,7 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 			std::cout << "point " << door.start.x_pos << "," << door.start.y_pos << " px1: " << door.px1.visited << " px2: " << door.px2.visited << std::endl;
 		}
 		if(door.px1.visited && door.px2.visited){
+			std::cout << "Both visited " << std::endl;
 			continue;
 		}
 
@@ -76,6 +74,15 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 		} else {
 			std::cout << "Room with no doors" << std::endl;
 		}
+		/*
+		if(plotnow % 10 == 0){
+			std::stringstream ss;
+			ss << "generated_" << plotnow++ << ".pgm";
+			std::string str = ss.str();
+			std::cout << "saving img: " << str << std::endl;
+			world->img->saveImage(str);
+		}
+		*/
 		door.adjacent = Tree_generator(*startPoint, doorways);
 		output.push_back(door);
 	}
