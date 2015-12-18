@@ -41,7 +41,7 @@ std::vector<Door> Tree::door_hitpoint_merge(std::vector<Door> & doorways, std::v
 
 std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways){
 
-	static int counter = 2;
+	static int counter = 50;
 
 	if(--counter <= 0){
 		std::vector<Door> rtn;
@@ -53,11 +53,17 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 	// Merge doors with hitspoints
 	auto doorways_visited = door_hitpoint_merge(doorways, hit_px_doors);
 
+    for(auto elm: doorways_visited){
+    	if(elm.start.x_pos == 2610){
+    		std::cout << "doors visisted: " << elm.start.x_pos << "," << elm.start.y_pos << " px1: " << elm.px1.visited << " px2: " << elm.px2.visited << std::endl;
+    	}
+    }
+
 	Point *startPoint;
 	std::vector<Door> output;
 	for(auto &door: doorways_visited){
-		if(door.start.x_pos == 456){
-			std::cout << "point " << door.start.x_pos << "," << door.start.y_pos << std::endl;
+		if(door.start.x_pos == 2610){
+			std::cout << "point " << door.start.x_pos << "," << door.start.y_pos << " px1: " << door.px1.visited << " px2: " << door.px2.visited << std::endl;
 		}
 		if(door.px1.visited && door.px2.visited){
 			continue;

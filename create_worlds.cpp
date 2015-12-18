@@ -59,8 +59,11 @@ int main(){
         workspace_door->img->setPixel(doorways[i].px2.x_pos,  doorways[i].px2.y_pos, 126);
 
     }
-
-	std::cout << "checkpoint 1" << std::endl;
+    for(auto elm: doorways){
+    	if(elm.start.x_pos == 2610){
+    		std::cout << "point " << elm.start.x_pos << "," << elm.start.y_pos << " px1: " << elm.px1.visited << " px2: " << elm.px2.visited << std::endl;
+    	}
+    }
 
     Tree tree(workspace_door);
     Point start = Point(2391,1300);
@@ -84,7 +87,6 @@ int main(){
     door.start.y_pos = 1300;
     graph.visualize(door);
     graph.SaveGraph("graph.dot");
-
 
 	workspace_door->img->saveImage("doors_detected.pgm");
 
