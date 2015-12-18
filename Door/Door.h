@@ -1,6 +1,7 @@
 #pragma once
 #include "../Point/Point.h"
 #include <cstdlib>
+#include <vector>
 
 class Door {
 private:
@@ -10,10 +11,9 @@ public:
 	Point stop;
     Point px1;
     Point px2;
-    bool px1_visited = false;
-    bool px2_visited = false;
 	Door();
 	Door(Point start, Point stop);
+	std::vector<Door> adjacent;
 	unsigned int id;
 
         unsigned int getLength() {

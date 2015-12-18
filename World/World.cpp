@@ -139,9 +139,9 @@ bool comperator(Point a, Point b){
     return (a.x_pos == b.x_pos && a.y_pos == b.y_pos);
 }
 
-std::vector<Point> World::Wavefront_DoorScanner(Point start, unsigned int door_color, unsigned int door_pixel_color){
+std::vector<Point> World::Wavefront_DoorScanner(Point &start, unsigned int door_color, unsigned int door_pixel_color){
 
-
+	start.visited = true;
     // We start from value door_color to avoid stopping when the wavefront reaches the value.
     unsigned int value = door_color;		//used for coloring the waves
     img->setPixel(start.x_pos, start.y_pos, value);

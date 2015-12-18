@@ -19,7 +19,7 @@ public:
     Tree(World* world);
     std::vector<Door> door_hitpoint_merge(std::vector<Door> &, std::vector<Point> &);
 
-    std::vector<Node> Tree_generator(Point start, std::vector<Door> &doorways);
+    std::vector<Door> Tree_generator(Point &start, std::vector<Door> &doorways);
 };
 
 
