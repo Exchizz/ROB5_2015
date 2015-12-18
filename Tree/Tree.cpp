@@ -41,21 +41,13 @@ std::vector<Door> Tree::door_hitpoint_merge(std::vector<Door> & doorways, std::v
 }
 
 std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways){
-/*
-	static int counter = 200;
 
-	if(--counter <= 0){
-		std::vector<Door> rtn;
-		return rtn;
-	}
-*/
 	// find doors from offload station
 	auto hit_px_doors = world->Wavefront_DoorScanner(start, 127, 126);
 
 	// Merge doors with hitspoints
 	auto doorways_visited = door_hitpoint_merge(doorways, hit_px_doors);
 
-	static int plotnow = 0;
 	Point *startPoint;
 	std::vector<Door> output;
 	for(auto &door: doorways_visited){
@@ -74,15 +66,7 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 		} else {
 			std::cout << "Room with no doors" << std::endl;
 		}
-		/*
-		if(plotnow % 10 == 0){
-			std::stringstream ss;
-			ss << "generated_" << plotnow++ << ".pgm";
-			std::string str = ss.str();
-			std::cout << "saving img: " << str << std::endl;
-			world->img->saveImage(str);
-		}
-		*/
+
 		door.adjacent = Tree_generator(*startPoint, doorways);
 		output.push_back(door);
 	}

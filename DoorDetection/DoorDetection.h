@@ -35,6 +35,7 @@ class DoorDetection {
 public:
 	DoorDetection();
     std::vector<Door> FindDoorways(const World *world);
+    void DrawPxAndDoors(std::vector<Door>& doorways, World* world);
 private:
     void FindHorizontalDoorways(unsigned int doorThickness_min , unsigned int doorThickness_max, unsigned int doorWidth_min, unsigned int doorWidth_max, World* world, std::vector<Door> &doorways);
     void FindVerticalDoorways(unsigned int doorThickness_min , unsigned int doorThickness_max, unsigned int doorWidth_min, unsigned int doorWidth_max, World* world, std::vector<Door> &doorways);
