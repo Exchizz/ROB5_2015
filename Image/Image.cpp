@@ -195,3 +195,37 @@ void Image::elevatorExpansion(int x, int y, int color) {
         setPixel(x, y, WALL);
     }
 }
+
+void Image::cleanupImageRobot(void)
+{
+    std::vector<std::vector <int> > expand_map;
+    int width = getWidth();
+    int height = getHeight();
+    int color = 0;
+
+    //Might optimize later
+
+    for(int i = 0; i < width; i++){
+        std::vector<int> col(height);
+        expand_map.push_back(col);
+    }
+
+    for(int x = 0; x < width; x++){
+        for(int y = 0; y < height; y++){
+            color = getPixel(x,y);
+            if(color >= 1){    // mussy walls
+                expand_map[x][y] = maxValue;
+            }
+            else                                    // freespace
+                expand_map[x][y] = WALL;
+        }
+    }
+
+    for(int x = 0; x < width; ++x){
+        for(int y = 0; y < height; y++){
+            //img->setPixel(x,y,(expand_map[x][y] == 0) ? WHITE : BLACK);
+            setPixel(x,y,expand_map[x][y]);
+        }
+    }
+}
+

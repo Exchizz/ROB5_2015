@@ -29,6 +29,7 @@ public:
 	void loadImage(const std::string filename);
 	void saveImage(std::string filename);
     void cleanupImage(void);
+    void cleanupImageRobot(void);
 	std::vector<std::vector<int>> imageData;
 	std::fstream imageFile;
 	int width;

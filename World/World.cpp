@@ -90,7 +90,6 @@ void World::Wavefront_offloading(Point start1, Point start2) {
 
 void World::Wavefront_navigation(Point start, Point stop) {
 
-
     unsigned int value = 1;		//used for coloring the waves
     img->setPixel(start.x_pos, start.y_pos, value);
 
@@ -112,6 +111,7 @@ void World::Wavefront_navigation(Point start, Point stop) {
 
                 // Stop when we reach stop-point
                 if (currentBrushfire.x_pos + x_add == stop.x_pos && currentBrushfire.y_pos + y_add == stop.y_pos){
+                    img->setPixel(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add, value);
                     return;
                 }
                 //check for out of bounds, skip if it is
@@ -132,7 +132,7 @@ void World::Wavefront_navigation(Point start, Point stop) {
             }
         }
     }
-
+    return;
 }
 
 bool comperator(Point a, Point b){
@@ -141,7 +141,7 @@ bool comperator(Point a, Point b){
 
 std::vector<Point> World::Wavefront_DoorScanner(Point &start, unsigned int door_color, unsigned int door_pixel_color){
 
-	start.visited = true;
+    start.visited = true;
     // We start from value door_color to avoid stopping when the wavefront reaches the value.
     unsigned int value = door_color;		//used for coloring the waves
     img->setPixel(start.x_pos, start.y_pos, value);
@@ -209,16 +209,16 @@ void World::WallExpansion() {
                 for(int i = 0; i <= expansion_factor;i++){
                     for(int j = 0; j <= expansion_factor;j++){
                         if(y+i <= img->getHeight()-1 && x+j <= img->getWidth()-1 ){
-                            expand_map[x+j][y+i] = 1;
+                            expand_map[x+j][y+i] = 0;
                         }
                         if(y+i <= img->getHeight()-1 && x-j >= 0){
-                            expand_map[x-j][y+i] = 1;
+                            expand_map[x-j][y+i] = 0;
                         }
                         if(y-i >= 0 && x-j >= 0 ){
-                            expand_map[x-j][y-i] = 1;
+                            expand_map[x-j][y-i] = 0;
                         }
                         if(y-i >= 0 && x+j <= img->getWidth()-1 ){
-                            expand_map[x+j][y-i] = 1;
+                            expand_map[x+j][y-i] = 0;
                         }
                     }
                 }
@@ -239,9 +239,9 @@ void World::WallExpansion() {
 
 bool World::outOfBounds(signed int x, signed int y)
 {
-    if(x < 0 || x >= img->getWidth())
+    if(x <= 0 || x >= img->getWidth())
         return true;
-    else if(y < 0 || y >= img->getHeight())
+    else if(y <= 0 || y >= img->getHeight())
         return true;
     else
         return false;
