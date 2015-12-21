@@ -17,8 +17,8 @@ public:
 	unsigned int id;
 
         unsigned int getLength() {
-                int lengthX = abs(stop.x_pos-start.x_pos);
-                int lengthY = abs(stop.y_pos-start.y_pos);
+                int lengthX = abs(stop.x-start.x);
+                int lengthY = abs(stop.y-start.y);
                 if(lengthX > lengthY)
                         return lengthX;
                 else

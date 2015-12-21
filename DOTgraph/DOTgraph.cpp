@@ -42,7 +42,7 @@ void DOTgraph::addEdge(std::string string1, std::string string2){
 
 std::string name(Door door){
 	std::stringstream ss;
-	ss  << door.start.x_pos << "." << door.start.y_pos;
+	ss  << door.start.x << "." << door.start.y;
 	std::string str = ss.str();
 	//std::cout << "out: " << str << std::endl;
 	return str;

@@ -17,19 +17,19 @@ std::vector<Door>  DoorDetection::FindDoorways(const World* world){
 	for(unsigned int i = 0; i < doorways.size();++i){
 
 		//Door vertical
-		if(doorways[i].start.x_pos == doorways[i].stop.x_pos){
-			doorways[i].px1.y_pos = doorways[i].start.y_pos + (doorways[i].getLength())/2;
-			doorways[i].px1.x_pos = doorways[i].start.x_pos - 1 ;
+		if(doorways[i].start.x == doorways[i].stop.x){
+			doorways[i].px1.y = doorways[i].start.y + (doorways[i].getLength())/2;
+			doorways[i].px1.x = doorways[i].start.x - 1 ;
 
-			doorways[i].px2.y_pos = doorways[i].start.y_pos + (doorways[i].getLength())/2;
-			doorways[i].px2.x_pos = doorways[i].start.x_pos + 1 ;
+			doorways[i].px2.y = doorways[i].start.y + (doorways[i].getLength())/2;
+			doorways[i].px2.x = doorways[i].start.x + 1 ;
 		} // Door horizontal
 		else {
-			doorways[i].px1.y_pos = doorways[i].start.y_pos - 1;
-			doorways[i].px1.x_pos = doorways[i].start.x_pos + (doorways[i].getLength())/2 ;
+			doorways[i].px1.y = doorways[i].start.y - 1;
+			doorways[i].px1.x = doorways[i].start.x + (doorways[i].getLength())/2 ;
 
-			doorways[i].px2.y_pos = doorways[i].start.y_pos + 1;
-			doorways[i].px2.x_pos = doorways[i].start.x_pos + (doorways[i].getLength())/2 ;
+			doorways[i].px2.y = doorways[i].start.y + 1;
+			doorways[i].px2.x = doorways[i].start.x + (doorways[i].getLength())/2 ;
 		}
 
 	}
@@ -41,24 +41,24 @@ std::vector<Door>  DoorDetection::FindDoorways(const World* world){
 void DoorDetection::DrawPxAndDoors(std::vector<Door>& doorways, World* world){
 	for(unsigned int i = 0; i < doorways.size();++i){
 		// Mark dooropening (vertical)
-		for(int y = doorways[i].start.y_pos; y <= doorways[i].stop.y_pos; ++y) {
-			world->img->setPixel(doorways[i].start.x_pos, y, 127);
+		for(int y = doorways[i].start.y; y <= doorways[i].stop.y; ++y) {
+			world->img->setPixel(doorways[i].start.x, y, 127);
 		}
 		// Mark dooropenings (horizantal)
-		for(int x = doorways[i].start.x_pos; x <= doorways[i].stop.x_pos; ++x) {
-			world->img->setPixel(x, doorways[i].start.y_pos, 127);
+		for(int x = doorways[i].start.x; x <= doorways[i].stop.x; ++x) {
+			world->img->setPixel(x, doorways[i].start.y, 127);
 		}
 
-		world->img->setPixel(doorways[i].px1.x_pos,  doorways[i].px1.y_pos, 126);
-		world->img->setPixel(doorways[i].px2.x_pos,  doorways[i].px2.y_pos, 126);
+		world->img->setPixel(doorways[i].px1.x,  doorways[i].px1.y, 126);
+		world->img->setPixel(doorways[i].px2.x,  doorways[i].px2.y, 126);
 	}
 }
 
 void DoorDetection::drawDoors(World* world, std::vector<Door> &doorways)
 {
 	for(auto doorwaysIt : doorways) {
-		for(int x = doorwaysIt.start.x_pos; x <= doorwaysIt.stop.x_pos; ++x) {
-			for(int y = doorwaysIt.start.y_pos; y <= doorwaysIt.stop.y_pos; ++y) {
+		for(int x = doorwaysIt.start.x; x <= doorwaysIt.stop.x; ++x) {
+			for(int y = doorwaysIt.start.y; y <= doorwaysIt.stop.y; ++y) {
 				world->img->setPixel(x, y, 0);
 			}
 		}
@@ -78,11 +78,11 @@ void DoorDetection::FindHorizontalDoorways(unsigned int doorThickness_min , unsi
 			if(world->img->getPixel(x, y) == 0 || (x == world->img->getWidth() - 1)) {
 				if(noLine == false) {
 					//end the last line segment
-					aDoor.stop.y_pos = y;
+					aDoor.stop.y = y;
 					if(x == world->img->getWidth() - 1)
-						aDoor.stop.x_pos = x;
+						aDoor.stop.x = x;
 					else
-						aDoor.stop.x_pos = x - 1;
+						aDoor.stop.x = x - 1;
 					//and save it
 					newDoors.push_back(aDoor);
 					noLine = true;
@@ -91,8 +91,8 @@ void DoorDetection::FindHorizontalDoorways(unsigned int doorThickness_min , unsi
 				if(noLine == true) {
 					noLine = false;
 					//start new line segment
-					aDoor.start.x_pos = x;
-					aDoor.start.y_pos = y;
+					aDoor.start.x = x;
+					aDoor.start.y = y;
 				}
 			}
 		}
@@ -106,7 +106,7 @@ void DoorDetection::FindHorizontalDoorways(unsigned int doorThickness_min , unsi
 				//is it to long to be a door?
 				if(!(lastDoorsIt->getLength() > doorWidth_max) && !(lastDoorsIt->getLength() < doorWidth_min)) {
 					//Is it on the edges of the map?
-					if(lastDoorsIt->start.x_pos != 0 && lastDoorsIt->stop.x_pos != (world->img->getWidth() - 1)) {
+					if(lastDoorsIt->start.x != 0 && lastDoorsIt->stop.x != (world->img->getWidth() - 1)) {
 						//Does the space behind become bigger and is it not to long?
 						int stepback = 0;
 						int overStartPixelValue, underEndPixelValue;
@@ -115,15 +115,15 @@ void DoorDetection::FindHorizontalDoorways(unsigned int doorThickness_min , unsi
 						while(stepback < doorThickness_max && keepLooping == true) {
 							stepback++;
 
-							for(int i = lastDoorsIt->start.x_pos; i <= lastDoorsIt->stop.x_pos; i++){
-								if(world->img->getPixel(i, lastDoorsIt->start.y_pos - stepback) == 0) {
+							for(int i = lastDoorsIt->start.x; i <= lastDoorsIt->stop.x; i++){
+								if(world->img->getPixel(i, lastDoorsIt->start.y - stepback) == 0) {
 									keepLooping = false;
 									break;
 								}
 							}
 
-							overStartPixelValue = world->img->getPixel(lastDoorsIt->start.x_pos - 1, lastDoorsIt->start.y_pos - stepback);
-							underEndPixelValue = world->img->getPixel(lastDoorsIt->stop.x_pos + 1, lastDoorsIt->stop.y_pos - stepback);
+							overStartPixelValue = world->img->getPixel(lastDoorsIt->start.x - 1, lastDoorsIt->start.y - stepback);
+							underEndPixelValue = world->img->getPixel(lastDoorsIt->stop.x + 1, lastDoorsIt->stop.y - stepback);
 
 							if(overStartPixelValue != 0 || underEndPixelValue != 0) {
 								//it is getting larger (door)
@@ -139,11 +139,11 @@ void DoorDetection::FindHorizontalDoorways(unsigned int doorThickness_min , unsi
 			//Are the line segments adjacent to each other?
 			do {
 				//std::cout << "I am looping" << std::endl;
-				if(lastDoorsIt->stop.x_pos == newDoorsIt->stop.x_pos) {
+				if(lastDoorsIt->stop.x == newDoorsIt->stop.x) {
 					newDoorsIt++;
 					lastDoorsIt++;
 				}
-				else if(lastDoorsIt->stop.x_pos > newDoorsIt->stop.x_pos) {
+				else if(lastDoorsIt->stop.x > newDoorsIt->stop.x) {
 					newDoorsIt++;
 				}
 				else {
@@ -153,13 +153,13 @@ void DoorDetection::FindHorizontalDoorways(unsigned int doorThickness_min , unsi
 				if(lastDoorsIt == lastDoors.end() || newDoorsIt == newDoors.end())
 					break;
 
-				if(lastDoorsIt->start.x_pos >= newDoorsIt->stop.x_pos) {
+				if(lastDoorsIt->start.x >= newDoorsIt->stop.x) {
 					newDoorsIt++;
 				}
-				else if(lastDoorsIt->stop.x_pos <= newDoorsIt->start.x_pos) {
+				else if(lastDoorsIt->stop.x <= newDoorsIt->start.x) {
 					lastDoorsIt++;
 				}
-			} while(lastDoorsIt->stop.x_pos < newDoorsIt->start.x_pos || lastDoorsIt->start.x_pos > newDoorsIt->stop.x_pos);
+			} while(lastDoorsIt->stop.x < newDoorsIt->start.x || lastDoorsIt->start.x > newDoorsIt->stop.x);
 
 			if(lastDoorsIt == lastDoors.end() || newDoorsIt == newDoors.end())
 				continue;
@@ -184,11 +184,11 @@ void DoorDetection::FindVerticalDoorways(unsigned int doorThickness_min , unsign
 			if(world->img->getPixel(x, y) == 0 || (y == world->img->getHeight() - 1)) {
 				if(noLine == false) {
 					//end the last line segment
-					aDoor.stop.x_pos = x;
+					aDoor.stop.x = x;
 					if(y == world->img->getHeight() - 1)
-						aDoor.stop.y_pos = y;
+						aDoor.stop.y = y;
 					else
-						aDoor.stop.y_pos = y - 1;
+						aDoor.stop.y = y - 1;
 					//and save it
 					newDoors.push_back(aDoor);
 					noLine = true;
@@ -197,8 +197,8 @@ void DoorDetection::FindVerticalDoorways(unsigned int doorThickness_min , unsign
 				if(noLine == true) {
 					noLine = false;
 					//start new line segment
-					aDoor.start.x_pos = x;
-					aDoor.start.y_pos = y;
+					aDoor.start.x = x;
+					aDoor.start.y = y;
 				}
 			}
 		}
@@ -212,7 +212,7 @@ void DoorDetection::FindVerticalDoorways(unsigned int doorThickness_min , unsign
 				//is it to long to be a door?
 				if(!(lastDoorsIt->getLength() > doorWidth_max) && !(lastDoorsIt->getLength() < doorWidth_min)) {
 					//Is it on the edges of the map?
-					if(lastDoorsIt->start.y_pos != 0 && lastDoorsIt->stop.y_pos != (world->img->getHeight() - 1)) {
+					if(lastDoorsIt->start.y != 0 && lastDoorsIt->stop.y != (world->img->getHeight() - 1)) {
 						//Does the space behind become bigger and is it not to long?
 						int stepback = 0;
 						int overStartPixelValue, underEndPixelValue;
@@ -221,15 +221,15 @@ void DoorDetection::FindVerticalDoorways(unsigned int doorThickness_min , unsign
 						while(stepback < doorThickness_max && keepLooping == true) {
 							stepback++;
 
-							for(int i = lastDoorsIt->start.y_pos; i <= lastDoorsIt->stop.y_pos; i++){
-								if(world->img->getPixel(lastDoorsIt->start.x_pos - stepback, i) == 0) {
+							for(int i = lastDoorsIt->start.y; i <= lastDoorsIt->stop.y; i++){
+								if(world->img->getPixel(lastDoorsIt->start.x - stepback, i) == 0) {
 									keepLooping = false;
 									break;
 								}
 							}
 
-							overStartPixelValue = world->img->getPixel(lastDoorsIt->start.x_pos - stepback, lastDoorsIt->start.y_pos - 1);
-							underEndPixelValue = world->img->getPixel(lastDoorsIt->stop.x_pos - stepback, lastDoorsIt->stop.y_pos + 1);
+							overStartPixelValue = world->img->getPixel(lastDoorsIt->start.x - stepback, lastDoorsIt->start.y - 1);
+							underEndPixelValue = world->img->getPixel(lastDoorsIt->stop.x - stepback, lastDoorsIt->stop.y + 1);
 
 							if(overStartPixelValue != 0 || underEndPixelValue != 0) {
 								//it is getting larger (door)
@@ -244,11 +244,11 @@ void DoorDetection::FindVerticalDoorways(unsigned int doorThickness_min , unsign
 			//Are the line segments adjacent to each other?
 			do {
 				//std::cout << "I am looping" << std::endl;
-				if(lastDoorsIt->stop.y_pos == newDoorsIt->stop.y_pos) {
+				if(lastDoorsIt->stop.y == newDoorsIt->stop.y) {
 					newDoorsIt++;
 					lastDoorsIt++;
 				}
-				else if(lastDoorsIt->stop.y_pos > newDoorsIt->stop.y_pos) {
+				else if(lastDoorsIt->stop.y > newDoorsIt->stop.y) {
 					newDoorsIt++;
 				}
 				else {
@@ -258,13 +258,13 @@ void DoorDetection::FindVerticalDoorways(unsigned int doorThickness_min , unsign
 				if(lastDoorsIt == lastDoors.end() || newDoorsIt == newDoors.end())
 					break;
 
-				if(lastDoorsIt->start.y_pos >= newDoorsIt->stop.y_pos) {
+				if(lastDoorsIt->start.y >= newDoorsIt->stop.y) {
 					newDoorsIt++;
 				}
-				else if(lastDoorsIt->stop.y_pos <= newDoorsIt->start.y_pos) {
+				else if(lastDoorsIt->stop.y <= newDoorsIt->start.y) {
 					lastDoorsIt++;
 				}
-			} while(lastDoorsIt->stop.y_pos < newDoorsIt->start.y_pos || lastDoorsIt->start.y_pos > newDoorsIt->stop.y_pos);
+			} while(lastDoorsIt->stop.y < newDoorsIt->start.y || lastDoorsIt->start.y > newDoorsIt->stop.y);
 
 			if(lastDoorsIt == lastDoors.end() || newDoorsIt == newDoors.end())
 				continue;
