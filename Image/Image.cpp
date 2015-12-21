@@ -4,8 +4,6 @@ Image::Image (const Image *obj){
     height = obj->height;
     width = obj->width;
     maxValue = obj->maxValue;
-    std::cout << "Copy constructor run1 " << std::endl;
-
     imageData = obj->imageData;
 }
 

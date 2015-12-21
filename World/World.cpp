@@ -11,9 +11,6 @@
 
 World::World(Image *rawImg) {
     img = new Image(rawImg);
-
-    //img->imageData = rawImg->imageData;
-    // TODO Auto-generated constructor stub
 }
 
 
@@ -23,7 +20,6 @@ void World::Wavefront_offloading(Point start1, Point start2) {
 
     img->setPixel(start1.x_pos, start1.y_pos, value1);
     img->setPixel(start2.x_pos, start2.y_pos, value2);
-
 
     std::queue<Point> brushfires1;
     std::queue<Point> brushfires2;
@@ -195,9 +191,6 @@ void World::WallExpansion() {
     int expansion_factor = 4;
     std::vector<std::vector <int> > expand_map;
 
-
-    //Might optimize later
-
     for(int i = 0; i < img->getWidth(); i++){
         std::vector<int> col(img->getHeight());
         expand_map.push_back(col);
@@ -230,7 +223,6 @@ void World::WallExpansion() {
 
     for(int x = 0; x < img->getWidth(); ++x){
         for(int y = 0; y < img->getHeight(); y++){
-            //img->setPixel(x,y,(expand_map[x][y] == 0) ? WHITE : BLACK);
             img->setPixel(x,y,expand_map[x][y]);
         }
     }
