@@ -39,8 +39,8 @@ int main(){
     DOTgraph graph;
     Door door;
     door.adjacent = door_tree;
-    door.start.x_pos = 2391;
-    door.start.y_pos = 1300;
+    door.start.x = 2391;
+    door.start.y = 1300;
     graph.visualize(door);
     graph.SaveGraph("graph.dot");
 
@@ -49,7 +49,7 @@ int main(){
     std::cout << "Vector size: " << doorsToInspect.size() << std::endl;
 
     for(auto elm:doorsToInspect ){
-    	std::cout << elm.start.x_pos << "." << elm.start.y_pos << std::endl;
+    	std::cout << elm.start.x << "." << elm.start.y << std::endl;
     }
 
 

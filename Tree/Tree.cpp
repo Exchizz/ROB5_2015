@@ -21,11 +21,11 @@ std::vector<Door> Tree::door_hitpoint_merge(std::vector<Door> & doorways, std::v
 			if(doorways[i].px1.visited  || doorways[i].px2.visited ){
 				break;
 			}
-			if(px.x_pos == doorways[i].px1.x_pos && px.y_pos == doorways[i].px1.y_pos){
+			if(px.x == doorways[i].px1.x && px.y == doorways[i].px1.y){
 				doorways[i].px1.visited = true;
 				check1 = true;
 			}
-			if(px.x_pos == doorways[i].px2.x_pos && px.y_pos == doorways[i].px2.y_pos){
+			if(px.x == doorways[i].px2.x && px.y == doorways[i].px2.y){
 				doorways[i].px2.visited = true;
 				check2 = true;
 			}
@@ -51,8 +51,8 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 	Point *startPoint;
 	std::vector<Door> output;
 	for(auto &door: doorways_visited){
-		if(door.start.x_pos == 2610){
-			std::cout << "point " << door.start.x_pos << "," << door.start.y_pos << " px1: " << door.px1.visited << " px2: " << door.px2.visited << std::endl;
+		if(door.start.x == 2610){
+			std::cout << "point " << door.start.x << "," << door.start.y << " px1: " << door.px1.visited << " px2: " << door.px2.visited << std::endl;
 		}
 		if(door.px1.visited && door.px2.visited){
 			std::cout << "Both visited " << std::endl;

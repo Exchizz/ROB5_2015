@@ -7,8 +7,8 @@ Robot::Robot(void)
 
 Robot::Robot(Point startPoint, World* ws)
 {
-	this->Qstart_x = startPoint.x_pos;
-	this->Qstart_y = startPoint.y_pos;
+	this->Qstart_x = startPoint.x;
+	this->Qstart_y = startPoint.y;
 
 	workspace = new World(ws->img);
 	path = new World(ws->img);

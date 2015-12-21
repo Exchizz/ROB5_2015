@@ -18,8 +18,8 @@ void World::Wavefront_offloading(Point start1, Point start2) {
     unsigned int value1 = 1;		//used for coloring the waves
     unsigned int value2 = 1;		//used for coloring the waves
 
-    img->setPixel(start1.x_pos, start1.y_pos, value1);
-    img->setPixel(start2.x_pos, start2.y_pos, value2);
+    img->setPixel(start1.x, start1.y, value1);
+    img->setPixel(start2.x, start2.y, value2);
 
     std::queue<Point> brushfires1;
     std::queue<Point> brushfires2;
@@ -35,23 +35,23 @@ void World::Wavefront_offloading(Point start1, Point start2) {
         if(!brushfires1.empty()){
             Point currentBrushfire1 = brushfires1.front();
             brushfires1.pop();
-            value1 = img->getPixel(currentBrushfire1.x_pos, currentBrushfire1.y_pos) + 1;
+            value1 = img->getPixel(currentBrushfire1.x, currentBrushfire1.y) + 1;
             //check and set all adjacent pixels (8 point connectivity)
             for(signed int x_add = -1; x_add < 2; x_add++) {
                 for(signed int y_add = -1; y_add < 2; y_add++) {
 
                     //check for out of bounds, skip if it is
-                    if(outOfBounds(currentBrushfire1.x_pos + x_add, currentBrushfire1.y_pos + y_add)) {
+                    if(outOfBounds(currentBrushfire1.x + x_add, currentBrushfire1.y + y_add)) {
                         continue;
                     }
 
-                    unsigned int check_value = img->getPixel(currentBrushfire1.x_pos + x_add, currentBrushfire1.y_pos + y_add);
+                    unsigned int check_value = img->getPixel(currentBrushfire1.x + x_add, currentBrushfire1.y + y_add);
 
                     if(check_value > value1) {
-                        Point nextFire(currentBrushfire1.x_pos + x_add, currentBrushfire1.y_pos + y_add);
+                        Point nextFire(currentBrushfire1.x + x_add, currentBrushfire1.y + y_add);
                         brushfires1.push(nextFire);
 
-                        img->setPixel(currentBrushfire1.x_pos + x_add, currentBrushfire1.y_pos + y_add, value1);
+                        img->setPixel(currentBrushfire1.x + x_add, currentBrushfire1.y + y_add, value1);
                     }
                 }
             }
@@ -60,23 +60,23 @@ void World::Wavefront_offloading(Point start1, Point start2) {
         if(!brushfires2.empty()){
             Point currentBrushfire2 = brushfires2.front();
             brushfires2.pop();
-            value2 = img->getPixel(currentBrushfire2.x_pos, currentBrushfire2.y_pos) + 1;
+            value2 = img->getPixel(currentBrushfire2.x, currentBrushfire2.y) + 1;
             //check and set all adjacent pixels (8 point connectivity)
             for(signed int x_add = -1; x_add < 2; x_add++) {
                 for(signed int y_add = -1; y_add < 2; y_add++) {
 
                     //check for out of bounds, skip if it is
-                    if(outOfBounds(currentBrushfire2.x_pos + x_add, currentBrushfire2.y_pos + y_add)) {
+                    if(outOfBounds(currentBrushfire2.x + x_add, currentBrushfire2.y + y_add)) {
                         continue;
                     }
 
-                    unsigned int check_value = img->getPixel(currentBrushfire2.x_pos + x_add, currentBrushfire2.y_pos + y_add);
+                    unsigned int check_value = img->getPixel(currentBrushfire2.x + x_add, currentBrushfire2.y + y_add);
 
                     if(check_value > value2) {
-                        Point nextFire(currentBrushfire2.x_pos + x_add, currentBrushfire2.y_pos + y_add);
+                        Point nextFire(currentBrushfire2.x + x_add, currentBrushfire2.y + y_add);
                         brushfires2.push(nextFire);
 
-                        img->setPixel(currentBrushfire2.x_pos + x_add, currentBrushfire2.y_pos + y_add, value2);
+                        img->setPixel(currentBrushfire2.x + x_add, currentBrushfire2.y + y_add, value2);
                     }
                 }
             }
@@ -87,7 +87,7 @@ void World::Wavefront_offloading(Point start1, Point start2) {
 void World::Wavefront_navigation(Point start, Point stop) {
 
     unsigned int value = 1;		//used for coloring the waves
-    img->setPixel(start.x_pos, start.y_pos, value);
+    img->setPixel(start.x, start.y, value);
 
     std::queue<Point> brushfires;
 
@@ -99,31 +99,31 @@ void World::Wavefront_navigation(Point start, Point stop) {
         brushfires.pop();
 
         //get current pixel value
-        value = img->getPixel(currentBrushfire.x_pos, currentBrushfire.y_pos) + 1;
+        value = img->getPixel(currentBrushfire.x, currentBrushfire.y) + 1;
 
         //check and set all adjacent pixels (8 point connectivity)
         for(signed int x_add = -1; x_add < 2; x_add++) {
             for(signed int y_add = -1; y_add < 2; y_add++) {
 
                 // Stop when we reach stop-point
-                if (currentBrushfire.x_pos + x_add == stop.x_pos && currentBrushfire.y_pos + y_add == stop.y_pos){
-                    img->setPixel(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add, value);
+                if (currentBrushfire.x + x_add == stop.x && currentBrushfire.y + y_add == stop.y){
+                    img->setPixel(currentBrushfire.x + x_add, currentBrushfire.y + y_add, value);
                     return;
                 }
                 //check for out of bounds, skip if it is
-                if(outOfBounds(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add)) {
+                if(outOfBounds(currentBrushfire.x + x_add, currentBrushfire.y + y_add)) {
                     continue;
                 }
 
                 //check if pixel value is larger and add new brushfire to queue (the value could be white or it could have already been checked
                 //                                                                               both cases need to be updated because the new path is shorter)
-                unsigned int check_value = img->getPixel(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add);
+                unsigned int check_value = img->getPixel(currentBrushfire.x + x_add, currentBrushfire.y + y_add);
 
                 if(check_value > value) {
-                    Point nextFire(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add);
+                    Point nextFire(currentBrushfire.x + x_add, currentBrushfire.y + y_add);
                     brushfires.push(nextFire);
 
-                    img->setPixel(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add, value);
+                    img->setPixel(currentBrushfire.x + x_add, currentBrushfire.y + y_add, value);
                 }
             }
         }
@@ -132,7 +132,7 @@ void World::Wavefront_navigation(Point start, Point stop) {
 }
 
 bool comperator(Point a, Point b){
-    return (a.x_pos == b.x_pos && a.y_pos == b.y_pos);
+    return (a.x == b.x && a.y == b.y);
 }
 
 std::vector<Point> World::Wavefront_DoorScanner(Point &start, unsigned int door_color, unsigned int door_pixel_color){
@@ -140,7 +140,7 @@ std::vector<Point> World::Wavefront_DoorScanner(Point &start, unsigned int door_
     start.visited = true;
     // We start from value door_color to avoid stopping when the wavefront reaches the value.
     unsigned int value = door_color;		//used for coloring the waves
-    img->setPixel(start.x_pos, start.y_pos, value);
+    img->setPixel(start.x, start.y, value);
 
     std::queue<Point> brushfires;
     std::vector<Point> door_px_points;
@@ -153,28 +153,28 @@ std::vector<Point> World::Wavefront_DoorScanner(Point &start, unsigned int door_
         brushfires.pop();
 
         //get current pixel value
-        value = img->getPixel(currentBrushfire.x_pos, currentBrushfire.y_pos) + 1;
+        value = img->getPixel(currentBrushfire.x, currentBrushfire.y) + 1;
 
         //check and set all adjacent pixels (8 point connectivity)
         for(signed int x_add = -1; x_add < 2; x_add++) {
             for(signed int y_add = -1; y_add < 2; y_add++) {
                 //check for out of bounds, skip if it is
-                if(outOfBounds(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add)) {
+                if(outOfBounds(currentBrushfire.x + x_add, currentBrushfire.y + y_add)) {
                     continue;
                 }
 
                 //check if pixel value is larger and add new brushfire to queue (the value could be white or it could have already been checked
                 //                                                                               both cases need to be updated because the new path is shorter)
-                unsigned int check_value = img->getPixel(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add);
+                unsigned int check_value = img->getPixel(currentBrushfire.x + x_add, currentBrushfire.y + y_add);
                 if(check_value == door_pixel_color){
-                    door_px_points.push_back(Point(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add));
+                    door_px_points.push_back(Point(currentBrushfire.x + x_add, currentBrushfire.y + y_add));
                 }
 
                 if(check_value > value && !(check_value == door_color)) { // Stop when we hit door
-                    Point nextFire(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add);
+                    Point nextFire(currentBrushfire.x + x_add, currentBrushfire.y + y_add);
                     brushfires.push(nextFire);
 
-                    img->setPixel(currentBrushfire.x_pos + x_add, currentBrushfire.y_pos + y_add, value);
+                    img->setPixel(currentBrushfire.x + x_add, currentBrushfire.y + y_add, value);
                 }
             }
         }
