@@ -4,14 +4,21 @@
 #include "../World/World.h"
 #include "../Door/Door.h"
 
+class EntryPoint{
+	Point Enter;
+	Point Leave;
+};
+
 class Node {
 
 public:
     std::vector<Node> adjacent;
 };
 
+
 class Tree {
     World* world;
+
 
 public:
     Tree();
@@ -21,7 +28,7 @@ public:
 
     std::vector<Door> Tree_generator(Point &start, std::vector<Door> &doorways);
     std::vector<Door> GenerateNavigationList(Door door);
-    Door AddToList(std::vector<Door>& doorList, Door parent);
+    Door AddToList(std::vector<Door> &doorList, Door &parent);
 
 };
 

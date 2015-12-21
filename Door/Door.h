@@ -11,9 +11,14 @@ public:
 	Point stop;
     Point px1;
     Point px2;
+
+	Point Enter;
+	Point Leave;
+	int cover = false;
+
 	Door();
 	Door(Point start, Point stop);
-	std::vector<Door> adjacent;
+	std::vector<Door> children;
 	unsigned int id;
 
         unsigned int getLength() {

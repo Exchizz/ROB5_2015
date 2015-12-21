@@ -66,7 +66,6 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 	for(auto &door: doorways_visited){
 
 		if(door.px1.visited && door.px2.visited){
-			std::cout << "Both visited " << std::endl;
 			continue;
 		}
 
@@ -78,11 +77,12 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 			std::cout << "Room with no doors" << std::endl;
 		}
 
-		door.adjacent = Tree_generator(*startPoint, doorways);
+		door.children = Tree_generator(*startPoint, doorways);
 		output.push_back(door);
 	}
 	return output;
 }
+
 
 
 std::vector<Door> Tree::GenerateNavigationList(Door door){
@@ -91,10 +91,29 @@ std::vector<Door> Tree::GenerateNavigationList(Door door){
 	return listOfVectors;
 }
 
-Door Tree::AddToList(std::vector<Door>& doorList, Door parent){
-	for(auto door : parent.adjacent){
-		doorList.push_back( AddToList(doorList, door) );
-	}
+Door Tree::AddToList(std::vector<Door> &doorList, Door &parent){
+
+		if(parent.children.size() == 0){
+			parent.cover = 1;
+			doorList.push_back(parent);
+			doorList.push_back(parent);
+			parent.cover = 0;
+		} else {
+			int i = 0;
+		//for(auto &door : parent.children){
+			for(i = 0; i < parent.children.size(); ++i){
+				doorList.push_back(parent);
+				doorList.push_back(parent.children[i]);
+				doorList.push_back( AddToList(doorList, parent.children[i]) );
+				if(parent.children[i].cover){
+					parent.cover = 1;
+				}
+				doorList.push_back(parent);
+				parent.cover = 0;
+			}
+			parent.cover = 1;
+
+		}
 	return parent;
 }
 

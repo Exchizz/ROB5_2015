@@ -41,7 +41,7 @@ int main(){
 
     DOTgraph graph;
     Door door;
-    door.adjacent = door_tree;
+    door.children = door_tree;
     door.start.x = 2391;
     door.start.y = 1300;
     graph.visualize(door);
@@ -77,11 +77,13 @@ int main(){
     robot.savePath("robotPath.pgm");
 
     workspace_door->img->saveImage("doors_detected.pgm");
+    for(auto elm : doorsToInspect){
+    	std::cout << "x,y: " << elm.start.x << "," << elm.start.y << " " << elm.cover << std::endl;
+    }
+
+	workspace_door->img->saveImage("doors_detected.pgm");
 
     std::cout << "Done" << std::endl;
 
     return 0;
 }
-
-
-

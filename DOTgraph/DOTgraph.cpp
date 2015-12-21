@@ -50,7 +50,7 @@ std::string name(Door door){
 
 
 std::string DOTgraph::visualize(Door door){
-	for(auto vectors : door.adjacent){
+	for(auto vectors : door.children){
 		auto textParent = name(door);
 		auto text = visualize(vectors);
 		addEdge(textParent,text);
