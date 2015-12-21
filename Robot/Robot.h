@@ -13,15 +13,7 @@ class Robot
 {
 private:
     enum direction {north, east, south, west, northeast, southeast, southwest, northwest};
-
- struct pathPlanner {
-     int length;
-     heading_type heading;
- } pathSegment;
-
-    std::queue<pathPlanner> pathTaken;
 public:
-
     World* workspace;
     //Image* qspaec;
     World* path;
@@ -31,6 +23,7 @@ public:
     unsigned int Qstart_x, Qstart_y;
     unsigned int current_x, current_y;
     double totalLength = 0;
+    bool returningHome = false;
 
     unsigned int cupsPickedUp = 0;
 
