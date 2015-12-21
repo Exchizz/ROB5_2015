@@ -9,7 +9,7 @@
 #include "../Point/Point.h"
 #include <algorithm>
 
-#define OFFLOADING_LEFT_X 2093
+#define OFFLOADING_LEFT_X 2393
 #define OFFLOADING_LEFT_Y 1303
 
 #define OFFLOADING_RIGHT_X 2872
@@ -227,7 +227,11 @@ void World::WallExpansion() {
                         }
                     }
                 }
-            }else if(expand_map[x][y] != 1){
+            }
+            else if(img->getPixel(x,y) == 150){
+                expand_map[x][y] = 150;
+            }
+            else{
                 expand_map[x][y] = img->maxValue;
             }
         }

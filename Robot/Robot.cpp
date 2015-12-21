@@ -69,7 +69,9 @@ bool Robot::scanRobotsCircumference(Point pose){
 	for(signed int x = -5; x < 5; ++x){
 		for(signed int y = -5; y < 5; ++y){
 			if(workspace->img->getPixel(pose.x + x, pose.y + y) == CUP){
-				std::cout << "Cup picked up" << std::endl;
+                workspace->img->setPixel(pose.x + x, pose.y + y,workspace->img->maxValue);
+                path->img->setPixel(pose.x + x, pose.y + y,6000);
+                std::cout << "Cup picked up at: " << pose.x + x << "," << pose.y + y << "from position" << pose.x << "," << pose.y << std::endl;
 				cupsPickedUp++;
 				if(cupsPickedUp == 20){
 					return true;
