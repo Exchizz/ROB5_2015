@@ -150,6 +150,7 @@ bool comperator(Point a, Point b){
 std::vector<Point> World::Wavefront_DoorScanner(Point &start, unsigned int door_color, unsigned int door_pixel_color){
 
     start.visited = true;
+
     // We start from value door_color to avoid stopping when the wavefront reaches the value.
     unsigned int value = door_color;		//used for coloring the waves
     img->setPixel(start.x, start.y, value);
@@ -243,7 +244,6 @@ void World::WallExpansion() {
         }
     }
 }
-
 
 bool World::outOfBounds(signed int x, signed int y)
 {

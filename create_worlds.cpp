@@ -37,13 +37,15 @@ int main(){
     Point start = Point(2391,1300);
     auto door_tree = tree.Tree_generator(start, doorways);
 
-
-
     DOTgraph graph;
     Door door;
     door.children = door_tree;
     door.start.x = 2391;
     door.start.y = 1300;
+    door.FirstPoint = PX1;
+    door.px1.x = 2391;
+    door.px1.y = 1300;
+
     graph.visualize(door);
     graph.SaveGraph("graph.dot");
 
@@ -51,6 +53,7 @@ int main(){
 
     std::cout << "Vector size: " << doorsToInspect.size() << std::endl;
 
+/*
     Point startPtr;
     int counter = 0;
     //for(auto elm:doorsToInspect ){
@@ -71,15 +74,28 @@ int main(){
         robot.goToPoint(startPtr);
     }
 
+*/
 //    Robot robot2(Point(4519, 76), Qspace1);
 //    robot2.goToPoint(Point(4626, 118));
 
     robot.savePath("robotPath.pgm");
 
     workspace_door->img->saveImage("doors_detected.pgm");
+    int i = 0;
     for(auto elm : doorsToInspect){
-    	std::cout << "x,y: " << elm.start.x << "," << elm.start.y << " " << elm.cover << std::endl;
+    	if(i == 0) {
+    		std::cout << "entry:\t";
+    		std::cout << "(" << elm.x << ", " << elm.y << ") \t" << "visited: " << elm.visited << std::endl;
+    		i++;
+    	}
+    	else {
+    		std::cout << "exit:\t";
+    		std::cout << "(" << elm.x << ", " << elm.y << ")";
+    		std::cout << "\t visited: " << elm.visited << std::endl << std::endl;
+    		i = 0;
+    	}
     }
+
 
 	workspace_door->img->saveImage("doors_detected.pgm");
 

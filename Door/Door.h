@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <vector>
 
+enum HitPoint { NONE, PX1, PX2};
+
 class Door {
 private:
 
@@ -12,9 +14,9 @@ public:
     Point px1;
     Point px2;
 
-	Point Enter;
-	Point Leave;
 	int cover = false;
+
+	HitPoint FirstPoint = NONE;
 
 	Door();
 	Door(Point start, Point stop);
