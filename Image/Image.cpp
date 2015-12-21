@@ -154,6 +154,9 @@ void Image::cleanupImage(void)
             else if(color == CUP){       // cups
                 expand_map[x][y] = CUP;
             }
+            else if(color == 126){
+                expand_map[x][y] = maxValue;
+            }
             else                                    // freespace
                 expand_map[x][y] = WALL;
         }
