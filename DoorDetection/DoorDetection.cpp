@@ -243,7 +243,6 @@ void DoorDetection::FindVerticalDoorways(unsigned int doorThickness_min , unsign
 
 			//Are the line segments adjacent to each other?
 			do {
-				//std::cout << "I am looping" << std::endl;
 				if(lastDoorsIt->stop.y == newDoorsIt->stop.y) {
 					newDoorsIt++;
 					lastDoorsIt++;

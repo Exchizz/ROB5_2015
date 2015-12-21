@@ -28,8 +28,7 @@ int main(){
 
     DoorDetection doordetection;
     auto doorways = doordetection.FindDoorways(workspace_door);
-
-    std::cout << "number of doore: " << doorways.size() << std::endl;
+    std::cout << "number of doors: " << doorways.size() << std::endl;
 
     //Draw PX (point on each site of door) and close the door
     doordetection.DrawPxAndDoors(doorways, workspace_door);

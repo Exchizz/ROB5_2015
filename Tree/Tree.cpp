@@ -13,32 +13,48 @@ Tree::Tree(World* world)
 
 std::vector<Door> Tree::door_hitpoint_merge(std::vector<Door> & doorways, std::vector<Point> &wavefront_hitpoint_px){
 	std::vector<Door> output;
-	bool check1 = false;
-	bool check2 = false;
+
 
 	for (auto px : wavefront_hitpoint_px){
 		for(int i = 0; i < doorways.size(); ++i){
-			if(doorways[i].px1.visited  || doorways[i].px2.visited ){
-				continue;
-			}
-			if(px.x == doorways[i].px1.x && px.y == doorways[i].px1.y){
+			if(px == doorways[i].px1 && !doorways[i].px1.visited){
 				doorways[i].px1.visited = true;
-				check1 = true;
 				output.push_back(doorways[i]);
 			}
-			if(px.x == doorways[i].px2.x && px.y == doorways[i].px2.y){
+			 if(px == doorways[i].px2 && !doorways[i].px2.visited){
 				doorways[i].px2.visited = true;
-				check2 = true;
 				output.push_back(doorways[i]);
 			}
 		}
 	}
+
 	return output;
 }
 
 std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways){
 
-	// find doors from offload station
+	//Loop through all doors and check if already scanned. If not continue and scan, else return empty vector.
+	for(auto elm : doorways){
+		// Look for px1
+		if(elm.px1 == start){
+			if(elm.px1.visited){
+				std::vector<Door> empty;
+				return empty;
+			} else {
+				break;
+			}
+		}
+		// Look for px2
+		if(elm.px2 == start){
+			if(elm.px2.visited){
+				std::vector<Door> empty;
+				return empty;
+			} else {
+				break;
+			}
+		}
+	}
+
 	auto hit_px_doors = world->Wavefront_DoorScanner(start, 127, 126);
 
 	// Merge doors with hitspoints
@@ -48,9 +64,7 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 	Point *startPoint;
 	std::vector<Door> output;
 	for(auto &door: doorways_visited){
-		if(door.start.x == 2610){
-			std::cout << "point " << door.start.x << "," << door.start.y << " px1: " << door.px1.visited << " px2: " << door.px2.visited << std::endl;
-		}
+
 		if(door.px1.visited && door.px2.visited){
 			std::cout << "Both visited " << std::endl;
 			continue;
