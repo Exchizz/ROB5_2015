@@ -34,7 +34,7 @@ void Robot::savePath(std::string filename){
 }
 
 double Robot::lengthTraveled(){
-    std::cout << Qstart_x << " " << Qstart_y << std::endl;
+    //std::cout << Qstart_x << " " << Qstart_y << std::endl;
     return totalLength;
 }
 
@@ -42,7 +42,7 @@ void Robot::goToPoint(Point stop)
 {
     navigationMap->img->cleanupImageRobot();
     Point start(Qstart_x, Qstart_y);
-    if(stop.x != currentMovingToPosition.x && stop.y != currentMovingToPosition.y)
+    if(stop.x != currentMovingToPosition.x && stop.y != currentMovingToPosition.y) // not on the way back from offloading station.
         currentMovingToPosition = stop;
     navigationMap->Wavefront_navigation(stop, start);
     followWavefront(navigationMap);
@@ -91,16 +91,18 @@ void Robot::followWavefront(World *map)
         value = navigationMap->img->getPixel(current_x, current_y);	// getting the current distance to goal
 
         if(scanRobotsCircumference(Point(current_x, current_y))){
-            std::cout << "going back" << std::endl;
+            std::cout << "going back at " << current_x << " " << current_y << std::endl;
             returningHome = true;
             Point currentPose = Point(current_x, current_y);
             cupsPickedUp = 0;
             followWavefront(offloadingMap);
+            std::cout << "returning home from " << current_x << " " << current_y << std::endl;
             goToPoint(currentPose);
             navigationMap->img->cleanupImageRobot();
             navigationMap->Wavefront_navigation(currentMovingToPosition, currentPose);
             noPath = true;
             returningHome = false;
+            std::cout << "home again at "<< current_x << " "<< current_y << std::endl;
         }
 
         switch(checkThisDirection) // checking the surrounding pixels
@@ -164,7 +166,7 @@ void Robot::followWavefront(World *map)
     Qstart_x = current_x;
     Qstart_y = current_y;
     noPath = true;
-    std::cout << totalLength << std::endl;
+    std::cout << "traveled" << totalLength << " currently at " << current_x << " " << current_y << std::endl;
 }
 
 bool Robot::checkDirection(int x, int y, int value)
