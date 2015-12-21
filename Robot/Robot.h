@@ -35,12 +35,12 @@ public:
     void followWavefront(Image* map);
 
     Robot(void);
-    Robot(int Qstart_x, int Qstart_y, World *ws);
-    void goToPoint(unsigned int goal_x, unsigned int goal_y);
+    Robot(Point , World *ws);
+    void goToPoint(Point);
     Image getPath();
-    void savePath();
+    void savePath(std::string);
     void updatelength();
-    int lengthTraveled();
+    double lengthTraveled();
     ~Robot(void);
 
 };
