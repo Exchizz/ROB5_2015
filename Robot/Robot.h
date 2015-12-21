@@ -26,17 +26,24 @@ public:
     //Image* qspaec;
     World* path;
     World* navigationMap;
+    World* offloadingMap;
 
     unsigned int Qstart_x, Qstart_y;
     unsigned int current_x, current_y;
     double totalLength = 0;
 
+    unsigned int cupsPickedUp = 0;
+
     bool checkDirection(int x, int y, int value);
-    void followWavefront(Image* map);
+    void followWavefront(World* map);
 
     Robot(void);
     Robot(Point , World *ws);
+
+    bool scanRobotsCircumference(Point pose);
+
     void goToPoint(Point);
+    Point currentMovingToPosition;
     Image getPath();
     void savePath(std::string);
     void updatelength();

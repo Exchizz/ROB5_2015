@@ -9,17 +9,24 @@
 #include "../Point/Point.h"
 #include <algorithm>
 
+#define OFFLOADING_LEFT_X 2093
+#define OFFLOADING_LEFT_Y 1303
+
+#define OFFLOADING_RIGHT_X 2872
+#define OFFLOADING_RIGHT_Y 1299
+
+
 World::World(Image *rawImg) {
     img = new Image(rawImg);
 }
 
 
-void World::Wavefront_offloading(Point start1, Point start2) {
+void World::Wavefront_offloading() {
     unsigned int value1 = 1;		//used for coloring the waves
     unsigned int value2 = 1;		//used for coloring the waves
 
-    img->setPixel(start1.x, start1.y, value1);
-    img->setPixel(start2.x, start2.y, value2);
+    img->setPixel(OFFLOADING_LEFT_X, OFFLOADING_LEFT_Y, value1);
+    img->setPixel(OFFLOADING_RIGHT_X, OFFLOADING_RIGHT_Y, value2);
 
     std::queue<Point> brushfires1;
     std::queue<Point> brushfires2;
@@ -27,8 +34,8 @@ void World::Wavefront_offloading(Point start1, Point start2) {
 
     //check adjacent pixels
     //    Brushfire Qstart(locX, locY); //Brushfire objects (basically just a point or pixel)
-    brushfires1.push(start1);      //brushfires is a queue of Brushfire objects
-    brushfires2.push(start2);      //brushfires is a queue of Brushfire objects
+    brushfires1.push(Point(OFFLOADING_LEFT_X, OFFLOADING_LEFT_Y));      //brushfires is a queue of Brushfire objects
+    brushfires2.push(Point(OFFLOADING_RIGHT_X, OFFLOADING_RIGHT_Y));      //brushfires is a queue of Brushfire objects
 
     while(!brushfires1.empty() || !brushfires2.empty()) {
 

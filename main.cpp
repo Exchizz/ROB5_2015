@@ -11,8 +11,9 @@ int main(){
 	Qspace1->WallExpansion();
 
 	// Starting at left-offloading-station
-    Robot robot(Point(4750,38),Qspace1);
-    robot.goToPoint(Point(4754, 38));
+	Robot robot(Point(624,38),Qspace1);
+	robot.scanRobotsCircumference(Point(2100,1400));
+	robot.goToPoint(Point(4742, 38));
 	robot.savePath("my_path.pgm");
 	std::cout << "Length traveled: " << robot.lengthTraveled() << std::endl;
 	return 0;
