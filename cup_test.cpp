@@ -12,10 +12,10 @@ int main(){
     Qspace1->img->saveImage("cup_qspace.pgm");
 
     // Starting at left-offloading-station
-    Robot robot(Point(2393,1304),Qspace1);
-    robot.goToPoint(Point(2355, 1304));
-    robot.savePath("my_path.pgm");
+    Robot robot(Point(2393,1303),Qspace1);
+    robot.goToPoint(Point(2310, 1303));
     robot.workspace->img->saveImage("cup_workspace.pgm");
     std::cout << "Length traveled: " << robot.lengthTraveled() << std::endl;
+    robot.savePath("my_path.pgm");
     return 0;
 }

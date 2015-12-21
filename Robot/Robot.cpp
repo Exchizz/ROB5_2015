@@ -88,69 +88,69 @@ void Robot::followWavefront(World *map)
     bool noPath = true;
 
     while(value != 1) {	// continue until goal is reached (goal has the value 1)
-        value = navigationMap->img->getPixel(current_x, current_y);	// getting the current distance to goal
+        value = map->img->getPixel(current_x, current_y);	// getting the current distance to goal
 
         if(scanRobotsCircumference(Point(current_x, current_y))){
-            std::cout << "going back at " << current_x << " " << current_y << std::endl;
+            //std::cout << "full of cups" << std::endl;
             returningHome = true;
+            Qstart_x = current_x; // current_x = Qstart_x at start of follow wayfront.
+            Qstart_y = current_y;
             Point currentPose = Point(current_x, current_y);
             cupsPickedUp = 0;
             followWavefront(offloadingMap);
-            std::cout << "returning home from " << current_x << " " << current_y << std::endl;
             goToPoint(currentPose);
-            navigationMap->img->cleanupImageRobot();
-            navigationMap->Wavefront_navigation(currentMovingToPosition, currentPose);
+            map->img->cleanupImageRobot();
+            map->Wavefront_navigation(currentMovingToPosition, currentPose);
             noPath = true;
             returningHome = false;
-            std::cout << "home again at "<< current_x << " "<< current_y << std::endl;
         }
 
-        switch(checkThisDirection) // checking the surrounding pixels
+        switch(checkThisDirection) // checking tvalue1he surrounding pixels
         {
         case north:
-            if(checkDirection(current_x, current_y - 1, value)){ //if the distance is shorter than the current distance, move
+            if(checkDirection(current_x, current_y - 1, value, map)){ //if the distance is shorter than the current distance, move
                 noPath = false;
                 totalLength++;
                 break;                                          //and stop searching
             }
         case east:
-            if(checkDirection(current_x + 1, current_y, value)){ //if the distance is shorter than the current distance, move
+            if(checkDirection(current_x + 1, current_y, value, map)){ //if the distance is shorter than the current distance, move
                 noPath = false;
                 totalLength++;
                 break;                                          //and stop searching
             }
         case south:
-            if(checkDirection(current_x, current_y + 1, value)){ //if the distance is shorter than the current distance, move
+            if(checkDirection(current_x, current_y + 1, value, map)){ //if the distance is shorter than the current distance, move
                 noPath = false;
                 totalLength++;
                 break;                                          //and stop searching
             }
         case west:
-            if(checkDirection(current_x - 1, current_y, value)){ //if the distance is shorter than the current distance, move
+            if(checkDirection(current_x - 1, current_y, value, map)){ //if the distance is shorter than the current distance, move
                 noPath = false;
                 totalLength++;
                 break;                                          //and stop searching
             }
         case northeast:                            //if it is not possible to go straight chack the angled pixels.
-            if(checkDirection(current_x + 1, current_y - 1, value)){ //if the distance is shorter than the current distance, move
+            if(checkDirection(current_x + 1, current_y - 1, value, map)){ //if the distance is shorter than the current distance, move
                 noPath = false;
                 totalLength += sqrt(2);
                 break;                                          //and stop searching
             }
         case southeast:
-            if(checkDirection(current_x + 1, current_y + 1, value)){ //if the distance is shorter than the current distance, move
+            if(checkDirection(current_x + 1, current_y + 1, value, map)){ //if the distance is shorter than the current distance, move
                 noPath = false;
                 totalLength += sqrt(2);
                 break;                                          //and stop searching
             }
         case southwest:
-            if(checkDirection(current_x - 1, current_y + 1, value)){ //if the distance is shorter than the current distance, move
+            if(checkDirection(current_x - 1, current_y + 1, value, map)){ //if the distance is shorter than the current distance, move
                 noPath = false;
                 totalLength += sqrt(2);
                 break;                                          //and stop searching
             }
         case northwest:
-            if(checkDirection(current_x - 1, current_y - 1, value)){ //if the distance is shorter than the current distance, move
+            if(checkDirection(current_x - 1, current_y - 1, value, map)){ //if the distance is shorter than the current distance, move
                 noPath = false;
                 totalLength += sqrt(2);
                 break;                                          //and stop searching
@@ -166,12 +166,12 @@ void Robot::followWavefront(World *map)
     Qstart_x = current_x;
     Qstart_y = current_y;
     noPath = true;
-    std::cout << "traveled" << totalLength << " currently at " << current_x << " " << current_y << std::endl;
+    //std::cout << "traveled " << totalLength << " currently at " << current_x << " " << current_y << std::endl;
 }
 
-bool Robot::checkDirection(int x, int y, int value)
+bool Robot::checkDirection(int x, int y, int value, World* map)
 {
-    unsigned int check_value = navigationMap->img->getPixel(x, y);
+    unsigned int check_value = map->img->getPixel(x, y);
     //std::cout << "checking " << check_value << " coordiante " << x << " og " << y<< " " << value << std::endl;
     if(check_value < value && check_value != 0) {
         path->img->setPixel(current_x, current_y, 4000);

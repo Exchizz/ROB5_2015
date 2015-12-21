@@ -27,7 +27,7 @@ public:
 
     unsigned int cupsPickedUp = 0;
 
-    bool checkDirection(int x, int y, int value);
+    bool checkDirection(int x, int y, int value, World *map);
     void followWavefront(World* map);
 
     Robot(void);
