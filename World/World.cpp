@@ -86,6 +86,11 @@ void World::Wavefront_offloading(Point start1, Point start2) {
 
 void World::Wavefront_navigation(Point start, Point stop) {
 
+    if (img->getPixel(start.x,start.y) == 0) {
+        std::cout << "Error - Started inside a wall at: " << start.x << "," << start.y << std::endl;
+        exit(0);
+    }
+
     unsigned int value = 1;		//used for coloring the waves
     img->setPixel(start.x, start.y, value);
 
