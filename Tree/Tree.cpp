@@ -16,25 +16,21 @@ std::vector<Door> Tree::door_hitpoint_merge(std::vector<Door> & doorways, std::v
 	bool check1 = false;
 	bool check2 = false;
 
-	for(int i = 0; i < doorways.size(); ++i){
-		for (auto px : wavefront_hitpoint_px){
+	for (auto px : wavefront_hitpoint_px){
+		for(int i = 0; i < doorways.size(); ++i){
 			if(doorways[i].px1.visited  || doorways[i].px2.visited ){
-				break;
+				continue;
 			}
 			if(px.x == doorways[i].px1.x && px.y == doorways[i].px1.y){
 				doorways[i].px1.visited = true;
 				check1 = true;
+				output.push_back(doorways[i]);
 			}
 			if(px.x == doorways[i].px2.x && px.y == doorways[i].px2.y){
 				doorways[i].px2.visited = true;
 				check2 = true;
+				output.push_back(doorways[i]);
 			}
-		}
-
-		if(check1 || check2){
-			check1 = false;
-			check2 = false;
-			output.push_back(doorways[i]);
 		}
 	}
 	return output;
@@ -47,6 +43,7 @@ std::vector<Door> Tree::Tree_generator(Point &start, std::vector<Door> &doorways
 
 	// Merge doors with hitspoints
 	auto doorways_visited = door_hitpoint_merge(doorways, hit_px_doors);
+
 
 	Point *startPoint;
 	std::vector<Door> output;
