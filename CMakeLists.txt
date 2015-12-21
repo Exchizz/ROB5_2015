@@ -32,7 +32,7 @@ ENDIF()
 
 # And now we add any targets that we want
 add_executable(read_save_image read_save_image.cpp Image/Image.cpp)
-add_executable(create_worlds create_worlds.cpp Image/Image.cpp World/World.cpp Point/Point.cpp Door/Door.cpp DoorDetection/DoorDetection.cpp Tree/Tree.cpp DOTgraph/DOTgraph.cpp)
+add_executable(create_worlds create_worlds.cpp Image/Image.cpp World/World.cpp Point/Point.cpp Door/Door.cpp DoorDetection/DoorDetection.cpp Tree/Tree.cpp DOTgraph/DOTgraph.cpp Robot/Robot.cpp)
 add_executable(main main.cpp Image/Image.cpp World/World.cpp Point/Point.cpp Door/Door.cpp DoorDetection/DoorDetection.cpp Tree/Tree.cpp DOTgraph/DOTgraph.cpp Robot/Robot.cpp)
 add_executable(cup_test cup_test.cpp Image/Image.cpp World/World.cpp Point/Point.cpp Door/Door.cpp DoorDetection/DoorDetection.cpp Tree/Tree.cpp DOTgraph/DOTgraph.cpp Robot/Robot.cpp)
 add_executable(squareCoverage SquareCoverageTest.cpp SquareCoverage/SquareCoveragePlanner.cpp Image/Image.cpp World/World.cpp Point/Point.cpp Door/Door.cpp DoorDetection/DoorDetection.cpp Tree/Tree.cpp DOTgraph/DOTgraph.cpp Robot/Robot.cpp)

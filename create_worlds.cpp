@@ -9,26 +9,30 @@
 #include "DoorDetection/DoorDetection.h"
 #include "Tree/Tree.h"
 #include "DOTgraph/DOTgraph.h"
+#include "Robot/Robot.h"
 
 int main(){
-	Image* rawImg = new Image;
-	rawImg->loadImage("complete_map_project.pgm");
-    rawImg->maxValue = 2887;
+    Image* rawImg = new Image;
+    rawImg->loadImage("complete_map_project.pgm");
+    rawImg->maxValue = 8191;
     rawImg->cleanupImage();
 
-	World* Qspace1 = new World(rawImg);
-	World* Qspace2 = new World(rawImg);
-	World* workspace_door = new World(rawImg);
+    World* Qspace1 = new World(rawImg);
+    World* Qspace2 = new World(rawImg);
+    World* workspace_door = new World(rawImg);
 
     Qspace1->WallExpansion();
+    Qspace1->img->saveImage("wallExpansion.pgm");
 
-	DoorDetection doordetection;
-	auto doorways = doordetection.FindDoorways(workspace_door);
+    Robot robot(Point(2393,1303),Qspace1);
 
-	std::cout << "number of doore: " << doorways.size() << std::endl;
+    DoorDetection doordetection;
+    auto doorways = doordetection.FindDoorways(workspace_door);
 
-	//Draw PX (point on each site of door) and close the door
-	doordetection.DrawPxAndDoors(doorways, workspace_door);
+    std::cout << "number of doore: " << doorways.size() << std::endl;
+
+    //Draw PX (point on each site of door) and close the door
+    doordetection.DrawPxAndDoors(doorways, workspace_door);
 
     Tree tree(workspace_door);
     Point start = Point(2391,1300);
@@ -48,16 +52,36 @@ int main(){
 
     std::cout << "Vector size: " << doorsToInspect.size() << std::endl;
 
-    for(auto elm:doorsToInspect ){
-    	std::cout << elm.start.x << "." << elm.start.y << std::endl;
+    Point startPtr;
+    int counter = 0;
+    //for(auto elm:doorsToInspect ){
+    for(int i = 0; i < doorsToInspect.size(); ++i ){
+        auto elm = doorsToInspect[i];
+        counter++;
+        std::cout << "counter: " << counter << std::endl;
+        if(elm.start.x == elm.stop.x){
+            startPtr.x = elm.start.x;
+            startPtr.y = elm.start.y + elm.getLength()/2;
+        }else if(elm.start.y == elm.stop.y){
+            startPtr.x = elm.start.x + elm.getLength()/2;
+            startPtr.y = elm.start.y;
+        }else{
+            std::cout << "Error non of the above" << std::endl;
+        }
+        std::cout << startPtr.x << "." << startPtr.y << std::endl;
+        robot.goToPoint(startPtr);
     }
 
+//    Robot robot2(Point(4519, 76), Qspace1);
+//    robot2.goToPoint(Point(4626, 118));
 
-	workspace_door->img->saveImage("doors_detected.pgm");
+    robot.savePath("robotPath.pgm");
+
+    workspace_door->img->saveImage("doors_detected.pgm");
 
     std::cout << "Done" << std::endl;
 
-return 0;
+    return 0;
 }
 
 

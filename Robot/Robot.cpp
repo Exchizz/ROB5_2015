@@ -16,8 +16,10 @@ Robot::Robot(Point startPoint, World* ws)
     workspace = new World(ws->img);
     path = new World(ws->img);
     navigationMap = new World(ws->img);
+    navigationMap->img->cleanupImageRobot();
 
     offloadingMap = new World(ws->img);
+    offloadingMap->img->cleanupImageRobot();
     offloadingMap->Wavefront_offloading();
 }
 
@@ -42,10 +44,13 @@ void Robot::goToPoint(Point stop)
 {
     navigationMap->img->cleanupImageRobot();
     Point start(Qstart_x, Qstart_y);
-    if(stop.x != currentMovingToPosition.x && stop.y != currentMovingToPosition.y) // not on the way back from offloading station.
+    if(!returningHome) // not on the way back from offloading station.
         currentMovingToPosition = stop;
     navigationMap->Wavefront_navigation(stop, start);
+    std::cout << "brushfire done" << std::endl;
     followWavefront(navigationMap);
+    std::cout << "follow done" << std::endl;
+
     //updatelength();
 }
 
@@ -86,71 +91,87 @@ void Robot::followWavefront(World *map)
     direction checkThisDirection = north;
 
     bool noPath = true;
+    value = map->img->getPixel(current_x, current_y);	// getting the current distance to goal
 
     while(value != 1) {	// continue until goal is reached (goal has the value 1)
-        value = map->img->getPixel(current_x, current_y);	// getting the current distance to goal
+        std::cout << "ok " << std::endl;
 
         if(scanRobotsCircumference(Point(current_x, current_y))){
-            //std::cout << "full of cups" << std::endl;
+            std::cout << "full of cups" << std::endl;
             returningHome = true;
             Qstart_x = current_x; // current_x = Qstart_x at start of follow wayfront.
             Qstart_y = current_y;
             Point currentPose = Point(current_x, current_y);
             cupsPickedUp = 0;
             followWavefront(offloadingMap);
+            std::cout << "offloading: wavefront done" << std::endl;
             goToPoint(currentPose);
+            std::cout << "Resuming path" << std::endl,
             map->img->cleanupImageRobot();
+            std::cout << "cleanup done" << std::endl;
+            std::cout << "Wavefront start " << currentMovingToPosition.x << " " << currentMovingToPosition.y << " wavefront stop " << currentPose.x << " " << currentPose.y << std::endl;
             map->Wavefront_navigation(currentMovingToPosition, currentPose);
-            noPath = true;
+            std::cout << "Wavefront continuing" << std::endl;
+            map->img->saveImage("continueMap.pgm");
             returningHome = false;
         }
+
+        noPath = true;
 
         switch(checkThisDirection) // checking tvalue1he surrounding pixels
         {
         case north:
             if(checkDirection(current_x, current_y - 1, value, map)){ //if the distance is shorter than the current distance, move
+                //std::cout << "north" << std::endl;
                 noPath = false;
                 totalLength++;
                 break;                                          //and stop searching
             }
         case east:
             if(checkDirection(current_x + 1, current_y, value, map)){ //if the distance is shorter than the current distance, move
+                //std::cout << "east" << std::endl;
                 noPath = false;
                 totalLength++;
                 break;                                          //and stop searching
             }
         case south:
             if(checkDirection(current_x, current_y + 1, value, map)){ //if the distance is shorter than the current distance, move
+                //std::cout << "south" << std::endl;
                 noPath = false;
                 totalLength++;
                 break;                                          //and stop searching
             }
         case west:
             if(checkDirection(current_x - 1, current_y, value, map)){ //if the distance is shorter than the current distance, move
+                //std::cout << "west" << std::endl;
                 noPath = false;
                 totalLength++;
                 break;                                          //and stop searching
             }
         case northeast:                            //if it is not possible to go straight chack the angled pixels.
             if(checkDirection(current_x + 1, current_y - 1, value, map)){ //if the distance is shorter than the current distance, move
+//                std::cout << "northeast" << std::endl;
                 noPath = false;
                 totalLength += sqrt(2);
                 break;                                          //and stop searching
             }
         case southeast:
             if(checkDirection(current_x + 1, current_y + 1, value, map)){ //if the distance is shorter than the current distance, move
+//                std::cout << "southeast" << std::endl;
                 noPath = false;
                 totalLength += sqrt(2);
                 break;                                          //and stop searching
             }
         case southwest:
             if(checkDirection(current_x - 1, current_y + 1, value, map)){ //if the distance is shorter than the current distance, move
+//                std::cout << "southwest" << std::endl;
                 noPath = false;
                 totalLength += sqrt(2);
                 break;                                          //and stop searching
             }
         case northwest:
             if(checkDirection(current_x - 1, current_y - 1, value, map)){ //if the distance is shorter than the current distance, move
+//                std::cout << "northwest" << std::endl;
                 noPath = false;
                 totalLength += sqrt(2);
                 break;                                          //and stop searching
@@ -158,10 +179,12 @@ void Robot::followWavefront(World *map)
         }
 
         if(noPath){
-            std::cout << "No Path could be found" << std::endl;
+            std::cout << "No Path could be found" << current_x << " " << current_y << std::endl;
             savePath("Robot_Nopath.pgm");
             exit(0);
         }
+        value = map->img->getPixel(current_x, current_y);	// getting the current distance to goal
+
     }
     Qstart_x = current_x;
     Qstart_y = current_y;
