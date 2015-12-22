@@ -57,7 +57,7 @@ bool Robot::scanRobotsCircumference(Point pose){
             if(workspace->img->getPixel(pose.x + x, pose.y + y) == CUP){
                 workspace->img->setPixel(pose.x + x, pose.y + y,workspace->img->maxValue);
                 path->img->setPixel(pose.x + x, pose.y + y,workspace->img->maxValue);
-                //std::cout << "Cup picked up at: " << pose.x + x << "," << pose.y + y << "from position" << pose.x << "," << pose.y << std::endl;
+                std::cout << "Cup picked up at: " << pose.x + x << "," << pose.y + y << "from position" << pose.x << "," << pose.y << " cups picked up: " << cupsPickedUp << std::endl;
                 cupsPickedUp++;
                 if(cupsPickedUp == 20){
                     return true;
@@ -89,21 +89,16 @@ void Robot::followWavefront(World *map)
 
     while(value != 1) {	// continue until goal is reached (goal has the value 1)
         if(scanRobotsCircumference(Point(current_x, current_y))){
-            std::cout << "full of cups" << std::endl;
+            std::cout << "Full of cups" << std::endl;
             returningHome = true;
             Qstart_x = current_x; // current_x = Qstart_x at start of follow wayfront.
             Qstart_y = current_y;
             Point currentPose = Point(current_x, current_y);
             cupsPickedUp = 0;
             followWavefront(offloadingMap);
-            std::cout << "offloading: wavefront done" << std::endl;
             goToPoint(currentPose);
-            std::cout << "Resuming path" << std::endl,
             map->img->cleanupImageRobot();
-            std::cout << "cleanup done" << std::endl;
-            std::cout << "Wavefront start " << currentMovingToPosition.x << " " << currentMovingToPosition.y << " wavefront stop " << currentPose.x << " " << currentPose.y << std::endl;
             map->Wavefront_navigation(currentMovingToPosition, currentPose);
-            std::cout << "Wavefront continuing" << std::endl;
             map->img->saveImage("continueMap.pgm");
             returningHome = false;
         }
