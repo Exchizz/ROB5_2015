@@ -27,31 +27,25 @@ Robot::~Robot(void)
 {
 }
 
-//Image Robot::getPath(){
-//    return path->img;
-//}
-
 void Robot::savePath(std::string filename){
     path->img->saveImage(filename);
 }
 
 double Robot::lengthTraveled(){
-    //std::cout << Qstart_x << " " << Qstart_y << std::endl;
     return totalLength;
 }
 
 void Robot::goToPoint(Point stop)
 {
+	if(stop.x == current_x && stop.y == current_y){
+		return;
+	}
     navigationMap->img->cleanupImageRobot();
     Point start(Qstart_x, Qstart_y);
     if(!returningHome) // not on the way back from offloading station.
         currentMovingToPosition = stop;
     navigationMap->Wavefront_navigation(stop, start);
-    std::cout << "brushfire done" << std::endl;
     followWavefront(navigationMap);
-    std::cout << "follow done" << std::endl;
-
-    //updatelength();
 }
 
 
@@ -94,8 +88,6 @@ void Robot::followWavefront(World *map)
     value = map->img->getPixel(current_x, current_y);	// getting the current distance to goal
 
     while(value != 1) {	// continue until goal is reached (goal has the value 1)
-        std::cout << "ok " << std::endl;
-
         if(scanRobotsCircumference(Point(current_x, current_y))){
             std::cout << "full of cups" << std::endl;
             returningHome = true;

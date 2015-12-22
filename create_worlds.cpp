@@ -52,6 +52,7 @@ int main(){
     auto doorsToInspect = tree.GenerateNavigationList(door);
 
     std::cout << "Vector size: " << doorsToInspect.size() << std::endl;
+    int inAll = doorsToInspect.size();
 
 /*
     Point startPtr;
@@ -78,23 +79,18 @@ int main(){
 //    Robot robot2(Point(4519, 76), Qspace1);
 //    robot2.goToPoint(Point(4626, 118));
 
-    robot.savePath("robotPath.pgm");
-
     workspace_door->img->saveImage("doors_detected.pgm");
+    int counter = 0;
     int i = 0;
     for(auto elm : doorsToInspect){
-    	if(i == 0) {
-    		std::cout << "entry:\t";
-    		std::cout << "(" << elm.x << ", " << elm.y << ") \t" << "visited: " << elm.visited << std::endl;
-    		i++;
-    	}
-    	else {
-    		std::cout << "exit:\t";
-    		std::cout << "(" << elm.x << ", " << elm.y << ")";
-    		std::cout << "\t visited: " << elm.visited << std::endl << std::endl;
-    		i = 0;
-    	}
+    	counter++;
+
+
+    	robot.goToPoint(elm);
+    	std::cout << (float)counter/inAll*100 << "% done" << "\r" << std::flush;
     }
+    robot.savePath("robotPath.pgm");
+    std::cout << "distance traveled: " << robot.lengthTraveled() << " pixels: " <<  (float)robot.lengthTraveled()/10 << " meters" << std::endl;
 
 
 	workspace_door->img->saveImage("doors_detected.pgm");
