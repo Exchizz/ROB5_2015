@@ -10,6 +10,8 @@
 #include "Tree/Tree.h"
 #include "DOTgraph/DOTgraph.h"
 #include "Robot/Robot.h"
+#include "SquareCoverage/SquareCoveragePlanner.h"
+#include <list>
 
 int main(){
     Image* rawImg = new Image;
@@ -20,6 +22,7 @@ int main(){
     World* Qspace1 = new World(rawImg);
     World* Qspace2 = new World(rawImg);
     World* workspace_door = new World(rawImg);
+    World* Workspace_Roomcoverage = new World(rawImg);
 
     Qspace1->WallExpansion();
     Qspace1->img->saveImage("wallExpansion.pgm");
@@ -40,11 +43,11 @@ int main(){
     DOTgraph graph;
     Door door;
     door.children = door_tree;
-    door.start.x = 2391;
-    door.start.y = 1300;
+    door.start.x = 2432;
+    door.start.y = 1330;
     door.FirstPoint = PX1;
-    door.px1.x = 2391;
-    door.px1.y = 1300;
+    door.px1.x = 2432;
+    door.px1.y = 1330;
 
     graph.visualize(door);
     graph.SaveGraph("graph.dot");
@@ -79,19 +82,46 @@ int main(){
 //    Robot robot2(Point(4519, 76), Qspace1);
 //    robot2.goToPoint(Point(4626, 118));
 
+
     workspace_door->img->saveImage("doors_detected.pgm");
     int counter = 0;
     int i = 0;
-    for(auto elm : doorsToInspect){
-    	counter++;
 
+    std::list<RoomCoverage*> rooms;
+//    for(auto elm : doorsToInspect){
+    for(int i = 0; i < doorsToInspect.size(); i+=2){
+    	Point Enter = doorsToInspect[i];
+    	Point Exit = doorsToInspect[i+1];
 
-    	robot.goToPoint(elm);
-    	std::cout << (float)counter/inAll*100 << "% done" << "\r" << std::flush;
+    	RoomCoverage* roomCoverage = new RoomCoverage(Enter, 4, 20, Workspace_Roomcoverage->img);
+    	rooms.push_back(roomCoverage);
+
+    	Point nextLocation;
+    	if(Enter.visited && Exit.visited){
+    		nextLocation = roomCoverage->pathCoverRoom(Enter, Exit);
+        	robot.goToPoint(nextLocation);
+    		while(!roomCoverage->roomCleared()){
+        		std::cout << "moving 1" << std::endl;
+    			nextLocation = roomCoverage->getNextLocation();
+            	robot.goToPoint(nextLocation);
+    		}
+
+    		rooms.pop_back();
+    		delete roomCoverage;
+    	} else {
+    		nextLocation = roomCoverage->pathGoToDoor(Enter, Exit);
+        	robot.goToPoint(nextLocation);
+        	while(!(nextLocation == Exit)){
+        		std::cout << "moving 2" << std::endl;
+        		nextLocation = roomCoverage->getNextLocation();
+            	robot.goToPoint(nextLocation);
+        	}
+    	}
+
+    	std::cout << (float)(counter++)/inAll*100 << "% done" << "\r" << std::flush;
     }
     robot.savePath("robotPath.pgm");
     std::cout << "distance traveled: " << robot.lengthTraveled() << " pixels: " <<  (float)robot.lengthTraveled()/10 << " meters" << std::endl;
-
 
 	workspace_door->img->saveImage("doors_detected.pgm");
 
