@@ -94,16 +94,15 @@ int main(){
 	int i = 0;
 
 	std::list<RoomCoverage*> rooms;
-	bool clearRoom = false;
+    bool clearedRoom = false;
 	//    for(auto elm : doorsToInspect){
 	for(int i = 0; i < doorsToInspect.size(); i+=2){
 		Point Enter = doorsToInspect[i];
 		Point Exit = doorsToInspect[i+1];
 
 		RoomCoverage* roomCoverage;
-		if(!clearRoom){
+        if(!clearedRoom){
 			roomCoverage = new RoomCoverage(Enter, 4, 20, Workspace_Roomcoverage->img);
-			rooms.push_back(roomCoverage);
 		}
 		Point nextLocation;
 		if(Enter.visited && Exit.visited){
@@ -115,10 +114,11 @@ int main(){
 				robot.goToPoint(nextLocation);
 			}
 
-			clearRoom = true;
+            clearedRoom = true;
+            delete roomCoverage;
+            roomCoverage = rooms.back();
+            rooms.pop_back();
 
-			rooms.pop_back();
-			delete roomCoverage;
 		} else {
 			nextLocation = roomCoverage->pathGoToDoor(Enter, Exit);
 			robot.goToPoint(nextLocation);
@@ -127,7 +127,8 @@ int main(){
 				nextLocation = roomCoverage->getNextLocation();
 				robot.goToPoint(nextLocation);
 			}
-			clearRoom = true;
+            rooms.push_back(roomCoverage);
+            clearedRoom = false;
 		}
 
 		std::cout << (float)(counter+=2)/inAll*100 << "% done" << "\n" << std::flush;
